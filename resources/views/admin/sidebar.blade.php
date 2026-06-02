@@ -52,6 +52,14 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('admin.logbook.index') }}" class="nav-link {{ $active === 'logbook' ? 'active' : '' }}">
+                <i class="nav-icon fas fa-book"></i>
+                <p>
+                    Logbook Magang
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('login.logout') }}" class="nav-link">
                 <i class="nav-icon fas fa-sign-out-alt"></i>
                 <p>
