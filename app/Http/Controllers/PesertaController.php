@@ -19,7 +19,11 @@ class PesertaController extends Controller
     
     public function daftar(Request $request)
     {
-        $pendaftar = Pendaftar::where('id_user', auth()->user()->id)->first();
+        $user = auth()->user();
+        $pendaftar = Pendaftar::where('id_user', auth()->id())
+            ->orderBy('created_at', 'DESC')
+            ->first();
+        $namaPeserta = $this->namaPeserta($user, $pendaftar);
         if ($pendaftar === null) {
             if ($request->isMethod('POST')){
                 self::daftar_baru($request);
@@ -28,6 +32,8 @@ class PesertaController extends Controller
             return view('peserta.daftar', [
                 'title' => 'Pendaftaran',
                 'active' => 'daftar',
+                'user' => $user,
+                'namaPeserta' => $namaPeserta,
             ]);
         }
         else {
@@ -39,27 +45,32 @@ class PesertaController extends Controller
                 return view('peserta.ubah', [
                     'title' => 'Pendaftaran',
                     'active' => 'daftar',
-                    'user' => auth()->user(),
+                    'user' => $user,
                     'pendaftar' => $pendaftar,
+                    'namaPeserta' => $namaPeserta,
                 ]);
             }
             elseif ($pendaftar['status'] == 'diterima') {
-                $pendamping = User::join('pendaftars', 'pendaftars.id_user', '=', 'users.id')
-                    ->join('pesertas', 'pesertas.id_pendaftar', '=', 'pendaftars.id')
-                    ->join('users as pendamping', 'pendamping.id', '=', 'pesertas.id_user')
-                    ->where('users.id',auth()->user()->id)
-                    ->first(array('pendamping.*'));
+                $pendamping = User::join('pesertas', 'pesertas.id_user', '=', 'users.id')
+                    ->where('pesertas.id_pendaftar', $pendaftar->id)
+                    ->first(array('users.*'));
 
                 return view('peserta.diterima', [
-                'title' => 'Pendaftaran',
-                'active' => 'daftar',
-                'pendamping' => $pendamping,
+                    'title' => 'Pendaftaran',
+                    'active' => 'daftar',
+                    'user' => $user,
+                    'pendaftar' => $pendaftar,
+                    'namaPeserta' => $namaPeserta,
+                    'pendamping' => $pendamping,
                 ]);
             }
             elseif ($pendaftar['status'] == 'ditolak'){
                 return view('peserta.ditolak', [
                     'title' => 'Pendaftaran',
                     'active' => 'daftar',
+                    'user' => $user,
+                    'pendaftar' => $pendaftar,
+                    'namaPeserta' => $namaPeserta,
                 ]);
             }
         }
@@ -67,6 +78,23 @@ class PesertaController extends Controller
         
     }
     
+
+    private function namaPeserta($user, $pendaftar = null)
+    {
+        if ($pendaftar && isset($pendaftar->nama) && $pendaftar->nama) {
+            return $pendaftar->nama;
+        }
+
+        if ($user && $user->name) {
+            return $user->name;
+        }
+
+        if ($user && $user->username) {
+            return $user->username;
+        }
+
+        return 'Peserta';
+    }
     public static function daftar_baru($request)
     {
         $validatedData = $request->validate([
@@ -191,11 +219,18 @@ class PesertaController extends Controller
     
     public function hapus()
     {
-        $pendaftar = Pendaftar::where('id_user', auth()->user()->id)->first();
+        $pendaftar = Pendaftar::where('id_user', auth()->id())
+            ->orderBy('created_at', 'DESC')
+            ->first();
+
+        if ($pendaftar === null) {
+            return redirect(route('peserta.daftar'))->with('success', 'Data pendaftaran tidak ditemukan');
+        }
+
         File::delete(public_path('storage').'/'.auth()->user()->foto);
         File::delete(public_path('storage').'/'.$pendaftar->cv);
         File::delete(public_path('storage').'/'.$pendaftar->pengajuan);
-        Pendaftar::where('id_user', auth()->user()->id)->delete();
+        Pendaftar::where('id', $pendaftar->id)->delete();
 
         User::where('id', auth()->user()->id)
             ->update([
