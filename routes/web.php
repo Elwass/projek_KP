@@ -13,6 +13,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\AdminLogbookController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\AdminAbsensiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +49,9 @@ Route::match($match, '/logbook/tambah', [LogbookController::class, 'tambah'])->n
 Route::match($match, '/logbook/edit/{id}', [LogbookController::class, 'edit'])->name('peserta.logbook.edit')->middleware('isPeserta');
 Route::get('/logbook/detail/{id}', [LogbookController::class, 'detail'])->name('peserta.logbook.detail')->middleware('isPeserta');
 Route::post('/logbook/hapus', [LogbookController::class, 'hapus'])->name('peserta.logbook.hapus')->middleware('isPeserta');
+// -- absensi scan wajah peserta
+Route::get('/absensi', [AbsensiController::class, 'index'])->name('peserta.absensi.index')->middleware('isPeserta');
+Route::post('/absensi', [AbsensiController::class, 'store'])->name('peserta.absensi.store')->middleware('isPeserta');
 
 // Admin
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index')->middleware('isNotPeserta');
@@ -67,6 +72,9 @@ Route::get('/admin/peserta/cek-status', [DataPesertaController::class, 'cek_stat
 Route::get('/admin/logbook', [AdminLogbookController::class, 'index'])->name('admin.logbook.index')->middleware('isNotPeserta');
 Route::get('/admin/logbook/detail/{id}', [AdminLogbookController::class, 'detail'])->name('admin.logbook.detail')->middleware('isNotPeserta');
 Route::post('/admin/logbook/status/{id}', [AdminLogbookController::class, 'status'])->name('admin.logbook.status')->middleware('isNotPeserta');
+// -- absensi scan wajah
+Route::get('/admin/absensi', [AdminAbsensiController::class, 'index'])->name('admin.absensi.index')->middleware('isNotPeserta');
+Route::get('/admin/absensi/detail/{id}', [AdminAbsensiController::class, 'detail'])->name('admin.absensi.detail')->middleware('isNotPeserta');
 // -- data instansi
 Route::get('/admin/instansi', [InstansiController::class, 'index'])->name('admin.instansi.index')->middleware('isNotPeserta');
 Route::match($match, '/admin/instansi/tambah', [InstansiController::class, 'tambah'])->name('admin.instansi.tambah')->middleware('isAdmin');
