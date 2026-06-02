@@ -57,4 +57,5 @@
             </table>
         </div>
     </div>
+    @include('peserta.partials.pendamping', ['pendamping' => $pendamping])
 @endsection

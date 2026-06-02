@@ -20,10 +20,11 @@ class PesertaController extends Controller
     public function daftar(Request $request)
     {
         $user = auth()->user();
-        $pendaftar = Pendaftar::where('id_user', auth()->id())
-            ->orderBy('created_at', 'DESC')
+        $pendaftar = $user->pendaftar()
+            ->with(['user', 'pendamping'])
             ->first();
         $namaPeserta = $this->namaPeserta($user, $pendaftar);
+        $pendamping = $pendaftar ? $pendaftar->pendamping : null;
         if ($pendaftar === null) {
             if ($request->isMethod('POST')){
                 self::daftar_baru($request);
@@ -34,6 +35,7 @@ class PesertaController extends Controller
                 'active' => 'daftar',
                 'user' => $user,
                 'namaPeserta' => $namaPeserta,
+                'pendamping' => $pendamping,
             ]);
         }
         else {
@@ -48,13 +50,10 @@ class PesertaController extends Controller
                     'user' => $user,
                     'pendaftar' => $pendaftar,
                     'namaPeserta' => $namaPeserta,
+                    'pendamping' => $pendamping,
                 ]);
             }
             elseif ($pendaftar['status'] == 'diterima') {
-                $pendamping = User::join('pesertas', 'pesertas.id_user', '=', 'users.id')
-                    ->where('pesertas.id_pendaftar', $pendaftar->id)
-                    ->first(array('users.*'));
-
                 return view('peserta.diterima', [
                     'title' => 'Pendaftaran',
                     'active' => 'daftar',
@@ -71,6 +70,7 @@ class PesertaController extends Controller
                     'user' => $user,
                     'pendaftar' => $pendaftar,
                     'namaPeserta' => $namaPeserta,
+                    'pendamping' => $pendamping,
                 ]);
             }
         }
@@ -81,8 +81,8 @@ class PesertaController extends Controller
 
     private function namaPeserta($user, $pendaftar = null)
     {
-        if ($pendaftar && isset($pendaftar->nama) && $pendaftar->nama) {
-            return $pendaftar->nama;
+        if ($pendaftar && $pendaftar->user && $pendaftar->user->name) {
+            return $pendaftar->user->name;
         }
 
         if ($user && $user->name) {
@@ -219,9 +219,7 @@ class PesertaController extends Controller
     
     public function hapus()
     {
-        $pendaftar = Pendaftar::where('id_user', auth()->id())
-            ->orderBy('created_at', 'DESC')
-            ->first();
+        $pendaftar = auth()->user()->pendaftar()->first();
 
         if ($pendaftar === null) {
             return redirect(route('peserta.daftar'))->with('success', 'Data pendaftaran tidak ditemukan');

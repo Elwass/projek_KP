@@ -37,6 +37,8 @@
             </p>
         </div>
     </div>
+    @include('peserta.partials.pendamping', ['pendamping' => $pendamping])
+
     <div class="card">
         <div class="card-body">
             <form action="{{ route('peserta.daftar') }}" method="POST" enctype="multipart/form-data">

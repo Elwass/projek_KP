@@ -43,4 +43,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function pendaftars()
+    {
+        return $this->hasMany(Pendaftar::class, 'id_user');
+    }
+
+    public function pendaftar()
+    {
+        return $this->hasOne(Pendaftar::class, 'id_user')->latestOfMany();
+    }
 }
