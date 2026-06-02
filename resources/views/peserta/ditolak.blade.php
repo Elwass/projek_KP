@@ -31,31 +31,5 @@
             <p class="card-title">Terima kasih telah mendaftar Praktik Kerja Lapangan (PKL) pada BIT House</p>
         </div>
     </div>
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Data Pendaftar</h3>
-        </div>
-        <div class="card-body">
-            <table class="table table-sm table-borderless col-6">
-                <tbody>
-                    <tr>
-                        <td>Nama</td>
-                        <td> : </td>
-                        <td>{{ $namaPeserta }}</td>
-                    </tr>
-                    <tr>
-                        <td>No Telpon</td>
-                        <td> : </td>
-                        <td>{{ $user->no_telp ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td>Email</td>
-                        <td> : </td>
-                        <td>{{ $user->email ?? '-' }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
     @include('peserta.partials.pendamping', ['pendamping' => $pendamping])
 @endsection
