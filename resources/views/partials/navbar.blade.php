@@ -19,7 +19,7 @@
         @auth
             @php
                 $user = auth()->user();
-                $profileUrl = $user->role === 'peserta' ? '#' : route('admin.pegawai.edit', $user->id);
+                $profileUrl = $user->role === 'peserta' ? route('siswa.biodata') : route('admin.pegawai.edit', $user->id);
                 $displayName = $user->name ?: $user->username;
                 $avatarUrl = $user->foto ? route('file.user', [$user->id, 'foto']) : asset('assets/img/avatar5.png');
             @endphp

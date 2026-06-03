@@ -50,6 +50,8 @@ Route::get('/file/absensi/{id}', [FileController::class, 'absensi'])->name('file
 Route::get('/dashboard', [PesertaController::class, 'index'])->name('peserta.index')->middleware('isPeserta');
 Route::match($match, '/daftar', [PesertaController::class, 'daftar'])->name('peserta.daftar')->middleware('isPeserta');
 Route::get('/hapus', [PesertaController::class, 'hapus'])->name('peserta.hapus')->middleware('isPeserta');
+Route::get('/siswa/biodata', [PesertaController::class, 'showBiodata'])->name('siswa.biodata')->middleware('isPeserta');
+Route::post('/siswa/biodata', [PesertaController::class, 'updateBiodata'])->name('siswa.biodata.update')->middleware('isPeserta');
 // -- logbook magang peserta
 Route::get('/logbook', [LogbookController::class, 'index'])->name('peserta.logbook.index')->middleware('isPeserta');
 Route::match($match, '/logbook/tambah', [LogbookController::class, 'tambah'])->name('peserta.logbook.tambah')->middleware('isPeserta');
