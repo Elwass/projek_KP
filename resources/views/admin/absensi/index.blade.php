@@ -54,9 +54,6 @@
                 <a href="{{ route('admin.absensi.export.pdf', request()->only(['tanggal', 'user_id'])) }}" class="btn btn-danger">
                     <i class="fas fa-file-pdf"></i> Export PDF
                 </a>
-                <a href="{{ route('admin.absensi.export.excel', request()->only(['tanggal', 'user_id'])) }}" class="btn btn-success">
-                    <i class="fas fa-file-excel"></i> Export Excel
-                </a>
             </div>
             <table id="tabel-absensi" class="table table-bordered table-hover">
                 <thead><tr><th>No</th><th>Peserta</th><th>NIM</th><th>Waktu</th><th>Pendamping</th><th>Status</th><th class="text-center">Aksi</th></tr></thead>

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\User;
 use Illuminate\Http\Request;
-use ZipArchive;
 
 class AdminAbsensiController extends Controller
 {
@@ -68,17 +67,6 @@ class AdminAbsensiController extends Controller
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
         ]);
-    }
-
-    public function exportExcel(Request $request)
-    {
-        $absensis = $this->absensiSesuaiFilter($request);
-        $fileName = $this->namaFileExport($request, 'xlsx');
-        $path = $this->buatXlsx($absensis);
-
-        return response()->download($path, $fileName, [
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        ])->deleteFileAfterSend(true);
     }
 
     private function absensiSesuaiFilter(Request $request)
@@ -160,37 +148,6 @@ class AdminAbsensiController extends Controller
         return $rows;
     }
 
-    private function buatXlsx($absensis)
-    {
-        $rows = $this->barisExport($absensis);
-        $path = tempnam(sys_get_temp_dir(), 'absensi_scan_');
-        $zip = new ZipArchive();
-        $zip->open($path, ZipArchive::OVERWRITE);
-        $zip->addFromString('[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>');
-        $zip->addFromString('_rels/.rels', '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>');
-        $zip->addFromString('xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Absensi" sheetId="1" r:id="rId1"/></sheets></workbook>');
-        $zip->addFromString('xl/_rels/workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>');
-        $zip->addFromString('xl/worksheets/sheet1.xml', $this->sheetXml($rows));
-        $zip->close();
-
-        return $path;
-    }
-
-    private function sheetXml($rows)
-    {
-        $xmlRows = '';
-        foreach ($rows as $rowIndex => $row) {
-            $xmlRows .= '<row r="'.($rowIndex + 1).'">';
-            foreach ($row as $columnIndex => $value) {
-                $cell = chr(65 + $columnIndex).($rowIndex + 1);
-                $xmlRows .= '<c r="'.$cell.'" t="inlineStr"><is><t>'.$this->xmlEscape($value).'</t></is></c>';
-            }
-            $xmlRows .= '</row>';
-        }
-
-        return '<?xml version="1.0" encoding="UTF-8"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>'.$xmlRows.'</sheetData></worksheet>';
-    }
-
     private function buatPdfSederhana($absensis)
     {
         $lines = ['Laporan Absensi Scan Wajah', ''];
@@ -225,11 +182,6 @@ class AdminAbsensiController extends Controller
         $pdf .= "trailer\n<< /Size ".(count($objects) + 1)." /Root 1 0 R >>\nstartxref\n".$xref."\n%%EOF";
 
         return $pdf;
-    }
-
-    private function xmlEscape($value)
-    {
-        return htmlspecialchars((string) $value, ENT_QUOTES | ENT_XML1, 'UTF-8');
     }
 
     private function pdfEscape($value)
