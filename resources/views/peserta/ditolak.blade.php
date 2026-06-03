@@ -26,9 +26,10 @@
 @section('main-content')
     <div class="card card-primary card-outline">
         <div class="card-body">
-            <h3>Selamat datang Aditya Pratama</h3>
+            <h3>Selamat datang {{ $namaPeserta }}</h3>
             <p class="card-title">Maaf pengajuan Praktik Kerja Lapangan (PKL) anda <span class="font-weight-bold text-danger">ditolak</span> oleh admin </p>
             <p class="card-title">Terima kasih telah mendaftar Praktik Kerja Lapangan (PKL) pada BIT House</p>
         </div>
     </div>
+    @include('peserta.partials.pendamping', ['pendamping' => $pendamping])
 @endsection

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Pendaftar;
 use App\Models\Peserta;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class PendaftaranController extends Controller
 {
@@ -136,9 +137,12 @@ class PendaftaranController extends Controller
 
     public function hapus(Request $request)
     {
-        File::delete(public_path('storage').'/'.$request['foto']);
-        File::delete(public_path('storage').'/'.$request['cv']);
-        File::delete(public_path('storage').'/'.$request['pengajuan']);
+        Storage::disk('public')->delete($request['foto']);
+        Storage::delete($request['foto']);
+        Storage::disk('public')->delete($request['cv']);
+        Storage::delete($request['cv']);
+        Storage::disk('public')->delete($request['pengajuan']);
+        Storage::delete($request['pengajuan']);
 
         Pendaftar::where('id',$request['id_pendaftar'])->delete();
         
