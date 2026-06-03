@@ -81,6 +81,8 @@ Route::get('/admin/logbook/detail/{id}', [AdminLogbookController::class, 'detail
 Route::post('/admin/logbook/status/{id}', [AdminLogbookController::class, 'status'])->name('admin.logbook.status')->middleware('isNotPeserta');
 // -- absensi scan wajah
 Route::get('/admin/absensi', [AdminAbsensiController::class, 'index'])->name('admin.absensi.index')->middleware('isNotPeserta');
+Route::get('/admin/absensi/export/pdf', [AdminAbsensiController::class, 'exportPdf'])->name('admin.absensi.export.pdf')->middleware('isNotPeserta');
+Route::get('/admin/absensi/export/excel', [AdminAbsensiController::class, 'exportExcel'])->name('admin.absensi.export.excel')->middleware('isNotPeserta');
 Route::get('/admin/absensi/detail/{id}', [AdminAbsensiController::class, 'detail'])->name('admin.absensi.detail')->middleware('isNotPeserta');
 // -- data instansi
 Route::get('/admin/instansi', [InstansiController::class, 'index'])->name('admin.instansi.index')->middleware('isNotPeserta');
