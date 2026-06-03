@@ -134,7 +134,7 @@
                     {{-- form foto --}}
                     <div class="col-md-6">
                         <label for="foto">Pas Photo</label>
-                        <p><img src="{{ asset("storage/$pegawai->foto") }}" alt="" style="width: 150px"></p>
+                        <p><img src="{{ route('file.user', [$pegawai->id, 'foto']) }}" alt="" style="width: 150px"></p>
                     </div>
                 </div>
                 <br>
