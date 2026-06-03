@@ -39,7 +39,7 @@
             <div class="row">
                 <div class="col-md-4 text-center mb-4">
                     <label class="d-block">Foto Profil</label>
-                    <img src="{{ $user->foto ? route('file.user', [$user->id, 'foto']) : asset('assets/img/avatar5.png') }}" alt="Foto profil {{ $user->name }}" class="img-fluid rounded border mb-3" style="max-height: 220px; object-fit: cover;">
+                    <img src="{{ $user->foto && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->foto) ? \Illuminate\Support\Facades\Storage::url($user->foto) . '?v=' . time() : asset('assets/img/avatar5.png') }}" alt="Foto profil {{ $user->name }}" class="img-fluid rounded border mb-3" style="max-height: 220px; object-fit: cover;">
                 </div>
 
                 <div class="col-md-8">

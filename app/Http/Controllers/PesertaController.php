@@ -114,12 +114,12 @@ class PesertaController extends Controller
             'tgl_selesai' => 'required',
             'cv' => 'required|mimes:pdf,doc,docx|max:10000',
             'pengajuan' => 'required|mimes:pdf,doc,docx|max:10000',
-            'foto' => 'required|image|file|max:1024',
+            'foto' => 'required|image|mimes:jpg,png,jpeg|max:1024',
         ]);
         
         $validatedData['cv'] = $request->file('cv')->store('cv', 'public');
         $validatedData['pengajuan'] = $request->file('pengajuan')->store('pengajuan', 'public');
-        $validatedData['foto'] = $request->file('foto')->store('foto', 'public');
+        $validatedData['foto'] = $request->file('foto')->store('mahasiswa', 'public');
 
         User::where('id', auth()->user()->id)
             ->update([
@@ -167,14 +167,17 @@ class PesertaController extends Controller
             'tgl_selesai' => 'required',
             'cv' => 'mimes:pdf,doc,docx|max:10000',
             'pengajuan' => 'mimes:pdf,doc,docx|max:10000',
-            'foto' => 'image|file|max:1024',
+            'foto' => 'image|mimes:jpg,png,jpeg|max:1024',
         ]);
 
-        if ($request->file('foto')) {
-            Storage::disk('public')->delete(auth()->user()->foto);
-            Storage::delete(auth()->user()->foto);
-            $validatedData['foto'] = $request->file('foto')->store('foto', 'public');
-        }else {
+        if ($request->hasFile('foto')) {
+            $fotoLama = auth()->user()->foto;
+            if ($fotoLama && Storage::disk('public')->exists($fotoLama)) {
+                Storage::disk('public')->delete($fotoLama);
+            }
+
+            $validatedData['foto'] = $request->file('foto')->store('mahasiswa', 'public');
+        } else {
             $validatedData['foto'] = auth()->user()->foto;
         }
 
@@ -242,8 +245,10 @@ class PesertaController extends Controller
             return redirect(route('peserta.daftar'))->with('success', 'Data pendaftaran tidak ditemukan');
         }
 
-        Storage::disk('public')->delete(auth()->user()->foto);
-        Storage::delete(auth()->user()->foto);
+        $fotoLama = auth()->user()->foto;
+        if ($fotoLama && Storage::disk('public')->exists($fotoLama)) {
+            Storage::disk('public')->delete($fotoLama);
+        }
         Storage::disk('public')->delete($pendaftar->cv);
         Storage::delete($pendaftar->cv);
         Storage::disk('public')->delete($pendaftar->pengajuan);

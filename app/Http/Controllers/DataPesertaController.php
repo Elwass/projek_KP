@@ -74,14 +74,16 @@ class DataPesertaController extends Controller
                 'instansi' => 'required|max:255',
                 'cv' => 'mimes:pdf,doc,docx|max:10000',
                 'pengajuan' => 'mimes:pdf,doc,docx|max:10000',
-                'foto' => 'image|file|max:1024',
+                'foto' => 'image|mimes:jpg,png,jpeg|max:1024',
             ]);
 
-            if ($request->file('foto')) {
-                Storage::disk('public')->delete($peserta->foto);
-                Storage::delete($peserta->foto);
-                $validatedData['foto'] = $request->file('foto')->store('foto', 'public');
-            }else {
+            if ($request->hasFile('foto')) {
+                if ($peserta->foto && Storage::disk('public')->exists($peserta->foto)) {
+                    Storage::disk('public')->delete($peserta->foto);
+                }
+
+                $validatedData['foto'] = $request->file('foto')->store('mahasiswa', 'public');
+            } else {
                 $validatedData['foto'] = $peserta->foto;
             }
     
