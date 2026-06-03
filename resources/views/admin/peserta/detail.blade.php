@@ -168,13 +168,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    {{-- form jadwal --}}
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="jadwal" class="form-label">Jadwal</label>
-                            <input type="text" class="form-control" id="jadwal" value="{{ $jadwal }}" name="jadwal" readonly>
-                        </div>
-                    </div>
                     {{-- form cv --}}
                     <div class="col-md-6">
                         <div class="mb-3">

@@ -8,7 +8,6 @@ use App\Http\Controllers\InstansiController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DataPesertaController;
 use App\Http\Controllers\PendaftaranController;
-use App\Http\Controllers\PenjadwalanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\LogbookController;
@@ -96,6 +95,3 @@ Route::match($match, '/admin/pegawai/edit/{id}', [PegawaiController::class, 'edi
 Route::get('/admin/pegawai/detail/{id}', [PegawaiController::class, 'detail'])->name('admin.pegawai.detail')->middleware('isNotPeserta');
 Route::post('/admin/pegawai/hapus', [PegawaiController::class, 'hapus'])->name('admin.pegawai.hapus')->middleware('isAdmin');
 Route::match($match, '/admin/pegawai/change-password/{id}', [PegawaiController::class, 'change_password'])->name('admin.pegawai.change_password')->middleware('isNotPeserta');
-// -- penjadwalan
-Route::get('/admin/penjadwalan', [PenjadwalanController::class, 'index'])->name('admin.penjadwalan.index')->middleware('isNotPeserta');
-Route::match($match, '/admin/penjadwalan/edit', [PenjadwalanController::class, 'edit'])->name('admin.penjadwalan.edit')->middleware('isNotPeserta');

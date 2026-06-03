@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Peserta;
 use App\Models\Instansi;
 use App\Models\History;
-use App\Models\Jadwal;
 use App\Models\Pendaftar;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -175,9 +174,6 @@ class DataPesertaController extends Controller
                 'pendaftars.id_user AS user',
             ));
         
-        $jadwal = Jadwal::where('id_peserta',$id)->get('jadwal')->toArray();
-        $jadwal = implode(', ',array_column($jadwal,'jadwal'));
-
         $pendampings = User::where('role','pendamping')->get();
         $instansis = Instansi::all();
         
@@ -187,7 +183,6 @@ class DataPesertaController extends Controller
             'peserta' => $peserta,
             'pendampings' => $pendampings,
             'instansis' => $instansis,
-            'jadwal' => $jadwal,
         ]);
     }
 
@@ -200,7 +195,6 @@ class DataPesertaController extends Controller
         Storage::disk('public')->delete($request['pengajuan']);
         Storage::delete($request['pengajuan']);
 
-        Jadwal::where('id_peserta',$request['id'])->delete();
         Peserta::where('id', $request['id'])->delete();
         Pendaftar::where('id',$request['id_pendaftar'])->delete();
         

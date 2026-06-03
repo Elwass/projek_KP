@@ -44,10 +44,18 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a href="{{ route('admin.penjadwalan.index') }}" class="nav-link {{ $active === 'penjadwalan' ? 'active' : '' }}">
-                <i class="nav-icon fas fa-calendar-alt"></i>
+            <a href="{{ route('admin.logbook.index') }}" class="nav-link {{ $active === 'logbook' ? 'active' : '' }}">
+                <i class="nav-icon fas fa-book"></i>
                 <p>
-                    Penjadwalan
+                    Logbook Magang
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.absensi.index') }}" class="nav-link {{ $active === 'absensi' ? 'active' : '' }}">
+                <i class="nav-icon fas fa-camera"></i>
+                <p>
+                    Absensi Scan Wajah
                 </p>
             </a>
         </li>
