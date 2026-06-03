@@ -49,6 +49,7 @@ class DataPesertaController extends Controller
                 'pesertas.id_user AS pendamping',
                 'pendaftars.id_user AS user',
                 'pesertas.status AS status_peserta',
+                'users.updated_at AS user_updated_at',
             ));
         
         $pendampings = User::where('role','pendamping')->get();
@@ -74,15 +75,14 @@ class DataPesertaController extends Controller
                 'instansi' => 'required|max:255',
                 'cv' => 'mimes:pdf,doc,docx|max:10000',
                 'pengajuan' => 'mimes:pdf,doc,docx|max:10000',
-                'foto' => 'image|file|max:1024',
+                'foto' => 'image|mimes:jpg,png,jpeg|max:1024',
             ]);
 
-            if ($request->file('foto')) {
-                Storage::disk('public')->delete($peserta->foto);
-                Storage::delete($peserta->foto);
-                $validatedData['foto'] = $request->file('foto')->store('foto', 'public');
-            }else {
-                $validatedData['foto'] = $peserta->foto;
+            $fotoLama = $peserta->foto;
+            if ($request->hasFile('foto')) {
+                $validatedData['foto'] = $request->file('foto')->store('mahasiswa', 'public');
+            } else {
+                $validatedData['foto'] = $fotoLama;
             }
     
             if ($request->file('cv')) {
@@ -145,6 +145,10 @@ class DataPesertaController extends Controller
                     'status' => $status,
                 ]);
 
+            if ($request->hasFile('foto') && $fotoLama && Storage::disk('public')->exists($fotoLama)) {
+                Storage::disk('public')->delete($fotoLama);
+            }
+
             History::create([
                 'user' => auth()->user()->name,
                 'aktivitas' => 'Mengubah data peserta '.$request['nama'],
@@ -172,6 +176,7 @@ class DataPesertaController extends Controller
                 'pesertas.id AS id_peserta',
                 'pesertas.id_user AS pendamping',
                 'pendaftars.id_user AS user',
+                'users.updated_at AS user_updated_at',
             ));
         
         $pendampings = User::where('role','pendamping')->get();
