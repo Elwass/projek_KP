@@ -190,7 +190,7 @@
                     <div class="col-md-6">
                         <label for="foto" class="form-label">Pas Photo</label>
                         <p>
-                            <img src="{{ route('file.pendaftar', [$peserta->id_pendaftar, 'foto']) }}" style="width: 150px">
+                            <img src="{{ $peserta->foto ? route('file.user', [$peserta->user, 'foto']) . '?v=' . optional($peserta->user_updated_at)->timestamp : asset('assets/img/avatar5.png') }}" alt="Foto profil {{ $peserta->name }}" class="img-fluid rounded border" style="width: 150px; height: 150px; object-fit: cover;">
                         </p>
                     </div>
                 </div>
