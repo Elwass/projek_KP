@@ -99,7 +99,7 @@
                                     <td>{{ $absensi->tanggal_waktu }}</td>
                                     <td>{{ $absensi->alamat }}</td>
                                     <td class="text-center">@include('absensi.status', ['status' => $absensi->status_absen])</td>
-                                    <td class="text-center"><a href="{{ asset('storage/'.$absensi->foto_wajah) }}" target="_blank" class="btn btn-sm btn-warning"><i class="fas fa-image"></i></a></td>
+                                    <td class="text-center"><a href="{{ route('file.absensi', $absensi->id) }}" target="_blank" class="btn btn-sm btn-warning"><i class="fas fa-image"></i></a></td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -7,6 +7,7 @@ use App\Models\Pendaftar;
 use App\Models\Peserta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class LogbookController extends Controller
 {
@@ -34,7 +35,7 @@ class LogbookController extends Controller
             $validatedData = $this->validasi($request);
 
             if ($request->file('bukti_kegiatan')) {
-                $validatedData['bukti_kegiatan'] = $request->file('bukti_kegiatan')->store('bukti_kegiatan');
+                $validatedData['bukti_kegiatan'] = $request->file('bukti_kegiatan')->store('bukti_kegiatan', 'public');
             }
 
             $validatedData['id_user'] = auth()->user()->id;
@@ -63,9 +64,10 @@ class LogbookController extends Controller
 
             if ($request->file('bukti_kegiatan')) {
                 if ($logbook->bukti_kegiatan) {
-                    File::delete(public_path('storage').'/'.$logbook->bukti_kegiatan);
+                    Storage::disk('public')->delete($logbook->bukti_kegiatan);
+                    Storage::delete($logbook->bukti_kegiatan);
                 }
-                $validatedData['bukti_kegiatan'] = $request->file('bukti_kegiatan')->store('bukti_kegiatan');
+                $validatedData['bukti_kegiatan'] = $request->file('bukti_kegiatan')->store('bukti_kegiatan', 'public');
             }
 
             $validatedData['status'] = 'pending';
@@ -101,7 +103,8 @@ class LogbookController extends Controller
         }
 
         if ($logbook->bukti_kegiatan) {
-            File::delete(public_path('storage').'/'.$logbook->bukti_kegiatan);
+            Storage::disk('public')->delete($logbook->bukti_kegiatan);
+            Storage::delete($logbook->bukti_kegiatan);
         }
         Logbook::where('id', $logbook->id)->delete();
 

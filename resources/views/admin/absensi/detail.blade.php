@@ -21,8 +21,8 @@
             <div class="card card-primary card-outline">
                 <div class="card-header"><h3 class="card-title">Foto Wajah</h3></div>
                 <div class="card-body text-center">
-                    <img src="{{ asset('storage/'.$absensi->foto_wajah) }}" alt="Foto wajah absensi" class="img-fluid rounded border">
-                    <p class="mt-3"><a href="{{ asset('storage/'.$absensi->foto_wajah) }}" target="_blank" class="btn btn-warning"><i class="fas fa-image"></i> Buka Foto</a></p>
+                    <img src="{{ route('file.absensi', $absensi->id) }}" alt="Foto wajah absensi" class="img-fluid rounded border">
+                    <p class="mt-3"><a href="{{ route('file.absensi', $absensi->id) }}" target="_blank" class="btn btn-warning"><i class="fas fa-image"></i> Buka Foto</a></p>
                 </div>
             </div>
         </div>

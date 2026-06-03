@@ -6,6 +6,7 @@ use App\Models\Pendaftar;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class PesertaController extends Controller
 {
@@ -112,14 +113,14 @@ class PesertaController extends Controller
             'jurusan' => 'required|max:255',
             'tgl_mulai' => 'required',
             'tgl_selesai' => 'required',
-            'cv' => 'required|mimes:pdf|max:10000',
-            'pengajuan' => 'required|mimes:pdf|max:10000',
+            'cv' => 'required|mimes:pdf,doc,docx|max:10000',
+            'pengajuan' => 'required|mimes:pdf,doc,docx|max:10000',
             'foto' => 'required|image|file|max:1024',
         ]);
         
-        $validatedData['cv'] = $request->file('cv')->store('cv');
-        $validatedData['pengajuan'] = $request->file('pengajuan')->store('pengajuan');
-        $validatedData['foto'] = $request->file('foto')->store('foto');
+        $validatedData['cv'] = $request->file('cv')->store('cv', 'public');
+        $validatedData['pengajuan'] = $request->file('pengajuan')->store('pengajuan', 'public');
+        $validatedData['foto'] = $request->file('foto')->store('foto', 'public');
 
         User::where('id', auth()->user()->id)
             ->update([
@@ -165,28 +166,31 @@ class PesertaController extends Controller
             'jurusan' => 'required|max:255',
             'tgl_mulai' => 'required',
             'tgl_selesai' => 'required',
-            'cv' => 'mimes:pdf|max:10000',
-            'pengajuan' => 'mimes:pdf|max:10000',
+            'cv' => 'mimes:pdf,doc,docx|max:10000',
+            'pengajuan' => 'mimes:pdf,doc,docx|max:10000',
             'foto' => 'image|file|max:1024',
         ]);
 
         if ($request->file('foto')) {
-            File::delete(public_path('storage').'/'.auth()->user()->foto);
-            $validatedData['foto'] = $request->file('foto')->store('foto');
+            Storage::disk('public')->delete(auth()->user()->foto);
+            Storage::delete(auth()->user()->foto);
+            $validatedData['foto'] = $request->file('foto')->store('foto', 'public');
         }else {
             $validatedData['foto'] = auth()->user()->foto;
         }
 
         if ($request->file('cv')) {
-            File::delete(public_path('storage').'/'.$pendaftar->cv);
-            $validatedData['cv'] = $request->file('cv')->store('cv');
+            Storage::disk('public')->delete($pendaftar->cv);
+            Storage::delete($pendaftar->cv);
+            $validatedData['cv'] = $request->file('cv')->store('cv', 'public');
         }else {
             $validatedData['cv'] = $pendaftar->cv;
         }
 
         if ($request->file('pengajuan')) {
-            File::delete(public_path('storage').'/'.$pendaftar->pengajuan);
-            $validatedData['pengajuan'] = $request->file('pengajuan')->store('pengajuan');
+            Storage::disk('public')->delete($pendaftar->pengajuan);
+            Storage::delete($pendaftar->pengajuan);
+            $validatedData['pengajuan'] = $request->file('pengajuan')->store('pengajuan', 'public');
         }else {
             $validatedData['pengajuan'] = $pendaftar->pengajuan;
         }
@@ -225,9 +229,12 @@ class PesertaController extends Controller
             return redirect(route('peserta.daftar'))->with('success', 'Data pendaftaran tidak ditemukan');
         }
 
-        File::delete(public_path('storage').'/'.auth()->user()->foto);
-        File::delete(public_path('storage').'/'.$pendaftar->cv);
-        File::delete(public_path('storage').'/'.$pendaftar->pengajuan);
+        Storage::disk('public')->delete(auth()->user()->foto);
+        Storage::delete(auth()->user()->foto);
+        Storage::disk('public')->delete($pendaftar->cv);
+        Storage::delete($pendaftar->cv);
+        Storage::disk('public')->delete($pendaftar->pengajuan);
+        Storage::delete($pendaftar->pengajuan);
         Pendaftar::where('id', $pendaftar->id)->delete();
 
         User::where('id', auth()->user()->id)

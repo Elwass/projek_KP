@@ -23,7 +23,7 @@
                 <div class="mb-3"><label>Judul Kegiatan</label><input type="text" class="form-control" value="{{ $logbook->judul_kegiatan }}" readonly></div>
                 <div class="mb-3"><label>Deskripsi Kegiatan</label><textarea class="form-control" rows="5" readonly>{{ $logbook->deskripsi_kegiatan }}</textarea></div>
                 <div class="mb-3"><label>Lokasi</label><input type="text" class="form-control" value="{{ $logbook->lokasi ?? '-' }}" readonly></div>
-                <div class="mb-3"><label>Bukti Kegiatan</label><p>@if ($logbook->bukti_kegiatan)<a href="{{ asset('storage/'.$logbook->bukti_kegiatan) }}" target="_blank">lihat file</a>@else - @endif</p></div>
+                <div class="mb-3"><label>Bukti Kegiatan</label><p>@if ($logbook->bukti_kegiatan)<a href="{{ route('file.logbook', $logbook->id) }}" target="_blank">lihat file</a>@else - @endif</p></div>
                 <a href="{{ route('admin.logbook.index') }}" class="btn btn-default">Kembali</a>
             </div></div>
         </div>

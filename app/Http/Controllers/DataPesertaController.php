@@ -10,6 +10,7 @@ use App\Models\Pendaftar;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 
 class DataPesertaController extends Controller
@@ -72,28 +73,31 @@ class DataPesertaController extends Controller
                 'tgl_selesai' => 'required',
                 'pendamping' => 'required|max:255',
                 'instansi' => 'required|max:255',
-                'cv' => 'mimes:pdf|max:10000',
-                'pengajuan' => 'mimes:pdf|max:10000',
+                'cv' => 'mimes:pdf,doc,docx|max:10000',
+                'pengajuan' => 'mimes:pdf,doc,docx|max:10000',
                 'foto' => 'image|file|max:1024',
             ]);
 
             if ($request->file('foto')) {
-                File::delete(public_path('storage').'/'.$peserta->foto);
-                $validatedData['foto'] = $request->file('foto')->store('foto');
+                Storage::disk('public')->delete($peserta->foto);
+                Storage::delete($peserta->foto);
+                $validatedData['foto'] = $request->file('foto')->store('foto', 'public');
             }else {
                 $validatedData['foto'] = $peserta->foto;
             }
     
             if ($request->file('cv')) {
-                File::delete(public_path('storage').'/'.$peserta->cv);
-                $validatedData['cv'] = $request->file('cv')->store('cv');
+                Storage::disk('public')->delete($peserta->cv);
+                Storage::delete($peserta->cv);
+                $validatedData['cv'] = $request->file('cv')->store('cv', 'public');
             }else {
                 $validatedData['cv'] = $peserta->cv;
             }
     
             if ($request->file('pengajuan')) {
-                File::delete(public_path('storage').'/'.$peserta->pengajuan);
-                $validatedData['pengajuan'] = $request->file('pengajuan')->store('pengajuan');
+                Storage::disk('public')->delete($peserta->pengajuan);
+                Storage::delete($peserta->pengajuan);
+                $validatedData['pengajuan'] = $request->file('pengajuan')->store('pengajuan', 'public');
             }else {
                 $validatedData['pengajuan'] = $peserta->pengajuan;
             }
@@ -189,9 +193,12 @@ class DataPesertaController extends Controller
 
     public function hapus(Request $request)
     {
-        File::delete(public_path('storage').'/'.$request['foto']);
-        File::delete(public_path('storage').'/'.$request['cv']);
-        File::delete(public_path('storage').'/'.$request['pengajuan']);
+        Storage::disk('public')->delete($request['foto']);
+        Storage::delete($request['foto']);
+        Storage::disk('public')->delete($request['cv']);
+        Storage::delete($request['cv']);
+        Storage::disk('public')->delete($request['pengajuan']);
+        Storage::delete($request['pengajuan']);
 
         Jadwal::where('id_peserta',$request['id'])->delete();
         Peserta::where('id', $request['id'])->delete();

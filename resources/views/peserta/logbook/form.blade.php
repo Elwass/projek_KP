@@ -55,7 +55,7 @@
     <small class="form-text text-muted">Opsional. Format: JPG, JPEG, PNG, PDF. Maksimal 10 MB.</small>
     @isset($logbook)
         @if ($logbook->bukti_kegiatan)
-            <p class="mt-2">Bukti saat ini: <a href="{{ asset('storage/'.$logbook->bukti_kegiatan) }}" target="_blank">lihat file</a></p>
+            <p class="mt-2">Bukti saat ini: <a href="{{ route('file.logbook', $logbook->id) }}" target="_blank">lihat file</a></p>
         @endif
     @endisset
     @error('bukti_kegiatan')

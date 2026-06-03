@@ -8,6 +8,7 @@ use App\Models\Peserta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class AbsensiController extends Controller
@@ -82,13 +83,7 @@ class AbsensiController extends Controller
         $folder = 'absensi_wajah/'.date('Y-m-d');
         $namaFile = auth()->user()->id.'_'.time().'.png';
         $path = $folder.'/'.$namaFile;
-        $storagePath = storage_path('app/'.$folder);
-
-        if (! File::exists($storagePath)) {
-            File::makeDirectory($storagePath, 0755, true);
-        }
-
-        File::put(storage_path('app/'.$path), $fotoWajah);
+        Storage::disk('public')->put($path, $fotoWajah);
 
         return $path;
     }

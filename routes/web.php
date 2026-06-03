@@ -15,6 +15,7 @@ use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\AdminLogbookController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AdminAbsensiController;
+use App\Http\Controllers\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,13 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('login.logout')-
 // Register
 Route::get('/register', [RegisterController::class, 'index'])->name('register.index')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store')->middleware('guest');
+
+
+// File preview/download
+Route::get('/file/pendaftar/{id}/{field}', [FileController::class, 'pendaftar'])->name('file.pendaftar')->middleware('auth');
+Route::get('/file/user/{id}/{field}', [FileController::class, 'user'])->name('file.user')->middleware('auth');
+Route::get('/file/logbook/{id}', [FileController::class, 'logbook'])->name('file.logbook')->middleware('auth');
+Route::get('/file/absensi/{id}', [FileController::class, 'absensi'])->name('file.absensi')->middleware('auth');
 
 // Peserta
 Route::get('/dashboard', [PesertaController::class, 'index'])->name('peserta.index')->middleware('isPeserta');
