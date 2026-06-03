@@ -6,8 +6,8 @@
 <link rel="stylesheet" href="{{ asset('assets/AdminLTE/dist/css/adminlte.min.css') }}">
 <script>
     (function () {
-        var savedTheme = localStorage.getItem('theme-mode');
-        var useDarkMode = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        var savedTheme = localStorage.getItem('theme-mode') || 'auto';
+        var useDarkMode = savedTheme === 'dark' || (savedTheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
         if (useDarkMode) {
             document.documentElement.classList.add('theme-dark');
@@ -53,13 +53,32 @@
         white-space: nowrap;
     }
 
-    .navbar-theme-toggle {
+    .navbar-theme-mode {
         align-items: center;
         border: 1px solid rgba(108, 117, 125, .25);
         border-radius: 999px;
         display: inline-flex;
         gap: .35rem;
-        padding: .4rem .75rem;
+        padding: .25rem .45rem;
+    }
+
+    .navbar-theme-icon {
+        color: #4b5563;
+        font-size: .9rem;
+    }
+
+    .navbar-theme-select {
+        background-color: transparent;
+        border: 0;
+        color: #1f2937;
+        font-weight: 600;
+        height: auto;
+        padding: .2rem 1.35rem .2rem .25rem;
+        width: auto;
+    }
+
+    .content-header .breadcrumb {
+        display: none;
     }
 
     html.theme-dark .app-top-navbar,
@@ -81,11 +100,22 @@
         background-color: rgba(255, 255, 255, .08);
     }
 
-    html.theme-dark .navbar-theme-toggle,
-    body.dark-mode .navbar-theme-toggle {
+    html.theme-dark .navbar-theme-mode,
+    body.dark-mode .navbar-theme-mode {
         background-color: #1f2937;
         border-color: rgba(255, 255, 255, .16);
+    }
+
+    html.theme-dark .navbar-theme-icon,
+    body.dark-mode .navbar-theme-icon,
+    html.theme-dark .navbar-theme-select,
+    body.dark-mode .navbar-theme-select {
         color: #f9fafb;
+    }
+
+    html.theme-dark .navbar-theme-select option,
+    body.dark-mode .navbar-theme-select option {
+        color: #1f2937;
     }
 
     @media (max-width: 575.98px) {
@@ -101,6 +131,10 @@
         .navbar-user-profile {
             padding-left: .45rem !important;
             padding-right: .45rem !important;
+        }
+
+        .navbar-theme-select {
+            max-width: 80px;
         }
     }
 </style>

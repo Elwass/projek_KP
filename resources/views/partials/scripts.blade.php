@@ -7,51 +7,45 @@
 <script>
     (function () {
         var storageKey = 'theme-mode';
-        var toggleButton = document.getElementById('theme-toggle');
-        var toggleIcon = document.getElementById('theme-toggle-icon');
-        var toggleText = document.getElementById('theme-toggle-text');
+        var modeSelect = document.getElementById('theme-mode');
         var mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
         function preferredTheme() {
             return mediaQuery.matches ? 'dark' : 'light';
         }
 
-        function selectedTheme() {
-            return localStorage.getItem(storageKey) || preferredTheme();
+        function selectedMode() {
+            return localStorage.getItem(storageKey) || 'auto';
         }
 
-        function applyTheme(theme) {
-            var darkMode = theme === 'dark';
+        function resolvedTheme(mode) {
+            return mode === 'auto' ? preferredTheme() : mode;
+        }
+
+        function applyTheme(mode) {
+            var activeMode = mode || selectedMode();
+            var darkMode = resolvedTheme(activeMode) === 'dark';
 
             document.documentElement.classList.toggle('theme-dark', darkMode);
             document.body.classList.toggle('dark-mode', darkMode);
 
-            if (toggleButton) {
-                toggleButton.setAttribute('aria-pressed', darkMode ? 'true' : 'false');
-            }
-
-            if (toggleIcon) {
-                toggleIcon.className = darkMode ? 'fas fa-sun' : 'fas fa-moon';
-            }
-
-            if (toggleText) {
-                toggleText.textContent = darkMode ? 'Light' : 'Dark';
+            if (modeSelect) {
+                modeSelect.value = activeMode;
             }
         }
 
-        applyTheme(selectedTheme());
+        applyTheme(selectedMode());
 
-        if (toggleButton) {
-            toggleButton.addEventListener('click', function () {
-                var nextTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-                localStorage.setItem(storageKey, nextTheme);
-                applyTheme(nextTheme);
+        if (modeSelect) {
+            modeSelect.addEventListener('change', function () {
+                localStorage.setItem(storageKey, this.value);
+                applyTheme(this.value);
             });
         }
 
         function syncAutoTheme() {
-            if (!localStorage.getItem(storageKey)) {
-                applyTheme(preferredTheme());
+            if (selectedMode() === 'auto') {
+                applyTheme('auto');
             }
         }
 

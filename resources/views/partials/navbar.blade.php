@@ -6,6 +6,16 @@
     </ul>
 
     <ul class="navbar-nav ml-auto align-items-center">
+        <li class="nav-item mr-2">
+            <div class="navbar-theme-mode" aria-label="Mode tampilan">
+                <i class="fas fa-adjust navbar-theme-icon" aria-hidden="true"></i>
+                <select id="theme-mode" class="custom-select custom-select-sm navbar-theme-select" aria-label="Pilih mode tampilan">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                    <option value="auto">Auto</option>
+                </select>
+            </div>
+        </li>
         @auth
             @php
                 $user = auth()->user();
@@ -20,11 +30,5 @@
                 </a>
             </li>
         @endauth
-        <li class="nav-item ml-2">
-            <button type="button" class="btn btn-sm navbar-theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
-                <i class="fas fa-moon" id="theme-toggle-icon"></i>
-                <span class="d-none d-sm-inline" id="theme-toggle-text">Dark</span>
-            </button>
-        </li>
     </ul>
 </nav>

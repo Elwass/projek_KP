@@ -12,7 +12,23 @@
             <a href="{{ route('peserta.daftar') }}" class="nav-link {{ $active === 'daftar' ? 'active' : '' }}">
                 <i class="nav-icon fas fa-clipboard-list"></i>
                 <p>
-                    Pendaftaran
+                    Master Data
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('peserta.logbook.index') }}" class="nav-link {{ $active === 'logbook' ? 'active' : '' }}">
+                <i class="nav-icon fas fa-book"></i>
+                <p>
+                    Logbook Magang
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('peserta.absensi.index') }}" class="nav-link {{ $active === 'absensi' ? 'active' : '' }}">
+                <i class="nav-icon fas fa-camera"></i>
+                <p>
+                    Absensi Scan Wajah
                 </p>
             </a>
         </li>
