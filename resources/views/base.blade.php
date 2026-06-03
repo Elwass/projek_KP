@@ -31,7 +31,7 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         <!-- Memuat foto profil dari direktori storage/foto/ -->
-                        <img src="{{ asset('storage/' . auth()->user()->foto) }}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ auth()->user()->foto ? route('file.user', [auth()->user()->id, 'foto']) : asset('assets/img/avatar5.png') }}" class="img-circle elevation-2" alt="User Image">
                         <!-- Menggunakan auth()->user()->foto untuk mendapatkan nama file gambar dari pengguna yang sedang login -->
                     </div>
                     <div class="info">
@@ -42,7 +42,7 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         <!-- Memuat foto profil dari direktori storage/foto/ -->
-                        <img src="{{ asset('storage/' . auth()->user()->foto) }}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ auth()->user()->foto ? route('file.user', [auth()->user()->id, 'foto']) : asset('assets/img/avatar5.png') }}" class="img-circle elevation-2" alt="User Image">
                         <!-- Menggunakan auth()->user()->foto untuk mendapatkan nama file gambar dari pengguna yang sedang login -->
                     </div>
                     <div class="info">
