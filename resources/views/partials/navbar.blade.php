@@ -21,7 +21,7 @@
                 $user = auth()->user();
                 $profileUrl = $user->role === 'peserta' ? route('siswa.biodata') : route('admin.pegawai.edit', $user->id);
                 $displayName = $user->name ?: $user->username;
-                $avatarUrl = $user->foto ? route('file.user', [$user->id, 'foto']) : asset('assets/img/avatar5.png');
+                $avatarUrl = $user->foto && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->foto) ? \Illuminate\Support\Facades\Storage::url($user->foto) . '?v=' . time() : asset('assets/img/avatar5.png');
             @endphp
             <li class="nav-item">
                 <a href="{{ $profileUrl }}" class="nav-link navbar-user-profile" aria-label="Profil {{ $displayName }}">
