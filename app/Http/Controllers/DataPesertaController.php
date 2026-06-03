@@ -49,6 +49,7 @@ class DataPesertaController extends Controller
                 'pesertas.id_user AS pendamping',
                 'pendaftars.id_user AS user',
                 'pesertas.status AS status_peserta',
+                'users.updated_at AS user_updated_at',
             ));
         
         $pendampings = User::where('role','pendamping')->get();
@@ -175,6 +176,7 @@ class DataPesertaController extends Controller
                 'pesertas.id AS id_peserta',
                 'pesertas.id_user AS pendamping',
                 'pendaftars.id_user AS user',
+                'users.updated_at AS user_updated_at',
             ));
         
         $pendampings = User::where('role','pendamping')->get();
