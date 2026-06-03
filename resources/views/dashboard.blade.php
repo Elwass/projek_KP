@@ -488,6 +488,30 @@
                         <a href="#" class="hover:text-gray-700 hover:underline">Kebijakan Privasi</a>
                         <a href="#syarat-ketentuan" class="hover:text-gray-700 hover:underline">Syarat &amp; Ketentuan</a>
                     </div>
+                    <p>Platform informasi dan pendaftaran Magang Berdampak DPRD Kabupaten Banyumas.</p>
+                </div>
+                <div>
+                    <h4>Kontak</h4>
+                    <ul>
+                        <li><a href="mailto:sekwan.inter@gmail.com">sekwan.inter@gmail.com</a></li>
+                        <li><a href="https://wa.me/6285175394358" target="_blank" rel="noreferrer">+62 85175394358</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Tautan Cepat</h4>
+                    <ul>
+                        <li><a href="#profil-magang">Profil Magang</a></li>
+                        <li><a href="{{ route('login.index') }}">Pendaftaran</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#kontak-bantuan">Kontak & Bantuan</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2025 DPRD Kabupaten Banyumas. All rights reserved.</span>
+                <div class="footer-bottom-links">
+                    <a href="#">Kebijakan Privasi</a>
+                    <a href="#">Syarat & Ketentuan</a>
                 </div>
             </div>
         </div>
