@@ -43,38 +43,26 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-item">
-            <a href="{{ route('admin.logbook.index') }}" class="nav-link {{ $active === 'logbook' ? 'active' : '' }}">
-                <i class="nav-icon fas fa-book"></i>
-                <p>
-                    Logbook Magang
-                </p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('admin.absensi.index') }}" class="nav-link {{ $active === 'absensi' ? 'active' : '' }}">
-                <i class="nav-icon fas fa-camera"></i>
-                <p>
-                    Absensi Scan Wajah
-                </p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('admin.logbook.index') }}" class="nav-link {{ $active === 'logbook' ? 'active' : '' }}">
-                <i class="nav-icon fas fa-book"></i>
-                <p>
-                    Logbook Magang
-                </p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('admin.absensi.index') }}" class="nav-link {{ $active === 'absensi' ? 'active' : '' }}">
-                <i class="nav-icon fas fa-camera"></i>
-                <p>
-                    Absensi Scan Wajah
-                </p>
-            </a>
-        </li>
+        @once('admin-logbook-menu')
+            <li class="nav-item">
+                <a href="{{ route('admin.logbook.index') }}" class="nav-link {{ request()->routeIs('admin.logbook.*') || $active === 'logbook' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-book"></i>
+                    <p>
+                        Logbook Magang
+                    </p>
+                </a>
+            </li>
+        @endonce
+        @once('admin-absensi-menu')
+            <li class="nav-item">
+                <a href="{{ route('admin.absensi.index') }}" class="nav-link {{ request()->routeIs('admin.absensi.*') || $active === 'absensi' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-camera"></i>
+                    <p>
+                        Absensi Scan Wajah
+                    </p>
+                </a>
+            </li>
+        @endonce
         <li class="nav-item">
             <a href="{{ route('login.logout') }}" class="nav-link">
                 <i class="nav-icon fas fa-sign-out-alt"></i>
