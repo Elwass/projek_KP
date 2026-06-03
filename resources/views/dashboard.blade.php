@@ -6,876 +6,221 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sistem Informasi Magang Berdampak</title>
     <link rel="icon" href="{{ asset('assets/img/images-removebg-preview.png') }}" type="image/png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary: #b91c1c;
-            --primary-dark: #991b1b;
-            --primary-soft: #fef2f2;
-            --text: #111827;
-            --muted: #4b5563;
-            --line: #e5e7eb;
-            --bg-soft: #f9fafb;
-            --white: #ffffff;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            color: var(--text);
-            background: var(--white);
-            font-family: 'Inter', Arial, sans-serif;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        img {
-            max-width: 100%;
-            display: block;
-        }
-
-        .container {
-            width: min(1120px, calc(100% - 32px));
-            margin: 0 auto;
-        }
-
-        .nav-container {
-            width: 100%;
-        }
-
-        .site-navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 50;
-            width: 100%;
-            border-bottom: 1px solid var(--primary);
-            background: var(--white);
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
-
-        .site-navbar.is-hidden {
-            transform: translateY(-100%);
-        }
-
-        .site-navbar.is-scrolled {
-            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
-        }
-
-        .nav-inner {
-            min-height: 72px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 10px 40px;
-        }
-
-        @media (min-width: 768px) {
-            .nav-inner {
-                min-height: 78px;
-                padding-top: 12px;
-                padding-bottom: 12px;
-            }
-        }
-
-        @media (min-width: 1280px) {
-            .nav-inner {
-                padding-left: 64px;
-                padding-right: 64px;
-            }
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 250px;
-        }
-
-        .brand img {
-            width: auto;
-            height: 42px;
-            object-fit: contain;
-        }
-
-        @media (min-width: 768px) {
-            .brand {
-                gap: 12px;
-            }
-
-            .brand img {
-                height: 48px;
-            }
-        }
-
-        .brand-title {
-            margin: 0;
-            color: #0f172a;
-            font-size: 13px;
-            line-height: 1.2;
-            font-weight: 700;
-        }
-
-        .brand-subtitle {
-            margin: 4px 0 0;
-            font-size: 11px;
-            color: #64748b;
-        }
-
-        .nav-links {
-            display: flex;
-            align-self: stretch;
-            align-items: stretch;
-            gap: 2px;
-        }
-
-        .nav-link,
-        .dropdown-trigger {
-            position: relative;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            border: 0;
-            background: transparent;
-            padding: 0 10px;
-            color: #1f2937;
-            font: inherit;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .nav-link::after,
-        .dropdown-trigger::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.2s ease;
-        }
-
-        .nav-link:hover,
-        .nav-link:focus,
-        .dropdown-item:hover .dropdown-trigger,
-        .dropdown-item:focus-within .dropdown-trigger {
-            color: var(--primary-dark);
-        }
-
-        .nav-link:hover::after,
-        .nav-link:focus::after,
-        .dropdown-item:hover .dropdown-trigger::after,
-        .dropdown-item:focus-within .dropdown-trigger::after {
-            width: 100%;
-        }
-
-        .dropdown-item {
-            position: relative;
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .chevron {
-            font-size: 16px;
-            line-height: 1;
-            transition: transform 0.2s ease;
-        }
-
-        .dropdown-item:hover .chevron,
-        .dropdown-item:focus-within .chevron {
-            transform: rotate(180deg);
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            z-index: 50;
-            min-width: 188px;
-            padding: 6px;
-            background: var(--white);
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.15);
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(-4px);
-            transition: opacity 0.15s ease, transform 0.15s ease;
-        }
-
-        .dropdown-item:hover .dropdown-menu,
-        .dropdown-item:focus-within .dropdown-menu {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
-        }
-
-        .dropdown-menu a,
-        .dropdown-menu button {
-            display: block;
-            width: 100%;
-            border: 0;
-            background: transparent;
-            padding: 7px 10px;
-            color: #1f2937;
-            font: inherit;
-            font-size: 13px;
-            text-align: left;
-            transition: color 0.2s ease;
-            cursor: pointer;
-        }
-
-        .dropdown-menu a:hover,
-        .dropdown-menu button:hover {
-            color: var(--primary);
-        }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #334155;
-        }
-
-        .icon-button,
-        .mobile-toggle {
-            width: 36px;
-            height: 36px;
-            border: 0;
-            background: transparent;
-            color: #334155;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6px;
-            transition: color 0.2s ease;
-        }
-
-        .icon-button:hover,
-        .mobile-toggle:hover {
-            color: var(--primary-dark);
-        }
-
-        .icon-button svg,
-        .mobile-toggle svg {
-            width: 18px;
-            height: 18px;
-            stroke: currentColor;
-            stroke-width: 2;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .mobile-toggle {
-            display: none;
-        }
-
-        .mobile-menu {
-            display: none;
-            border-top: 1px solid var(--line);
-            background: var(--white);
-            padding: 12px 16px 18px;
-        }
-
-        .mobile-menu-group {
-            padding: 8px 0;
-        }
-
-        .mobile-menu p,
-        .mobile-menu a {
-            display: block;
-            margin: 0;
-            padding: 4px 0;
-            color: #1f2937;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .mobile-menu .mobile-sub-link {
-            padding-left: 12px;
-            color: #4b5563;
-            font-weight: 500;
-        }
-
-        .hero {
-            min-height: calc(100vh - 72px);
-            margin-top: 72px;
-            position: relative;
-            overflow: hidden;
-            background: url('{{ asset('assets/img/profil.jpg') }}') center/cover no-repeat;
-        }
-
-        @media (min-width: 768px) {
-            .hero {
-                min-height: calc(100vh - 78px);
-                margin-top: 78px;
-            }
-        }
-
-        .hero-inner {
-            min-height: calc(100vh - 78px);
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            padding: 80px 0;
-        }
-
-        .hero-copy {
-            max-width: 680px;
-            color: var(--white);
-        }
-
-        .eyebrow {
-            margin: 0 0 16px;
-            color: #fee2e2;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-        }
-
-        .hero h1 {
-            margin: 0;
-            font-size: clamp(34px, 5.6vw, 58px);
-            line-height: 1.08;
-            font-weight: 700;
-        }
-
-        .hero p {
-            max-width: 720px;
-            margin: 22px 0 0;
-            color: #e5e7eb;
-            font-size: clamp(15px, 1.6vw, 17px);
-            line-height: 1.8;
-        }
-
-        .hero-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-top: 32px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 44px;
-            padding: 0 22px;
-            border: 1px solid transparent;
-            font-weight: 700;
-            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-        }
-
-        .btn:hover {
-            transform: translateY(-1px);
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-outline {
-            border-color: rgba(255, 255, 255, 0.8);
-            color: var(--white);
-        }
-
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .section {
-            padding: 72px 0;
-        }
-
-        .section-tight {
-            padding-top: 44px;
-        }
-
-        .section-soft {
-            background: var(--bg-soft);
-        }
-
-        .section-title {
-            margin: 0;
-            font-size: 24px;
-            line-height: 1.3;
-            font-weight: 700;
-        }
-
-        .section-title.center,
-        .section-lead.center {
-            text-align: center;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .section-lead {
-            max-width: 860px;
-            margin: 14px 0 0;
-            color: var(--muted);
-            line-height: 1.8;
-        }
-
-        .profil-grid,
-        .terms-grid {
-            margin-top: 32px;
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 16px;
-        }
-
-        .terms-grid {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 24px;
-        }
-
-        .info-card,
-        .term-card,
-        .faq-card,
-        .contact-card {
-            border: 1px solid var(--line);
-            background: var(--white);
-            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
-        }
-
-        .info-card,
-        .term-card {
-            border-radius: 14px;
-            padding: 22px;
-        }
-
-        .info-card h3,
-        .term-card h3,
-        .timeline-card h3 {
-            margin: 0 0 12px;
-            font-size: 16px;
-        }
-
-        .ordered-list,
-        .bullet-list {
-            margin: 0;
-            padding-left: 20px;
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.75;
-        }
-
-        .timeline-wrap {
-            position: relative;
-            margin-top: 44px;
-            padding-bottom: 8px;
-        }
-
-        .timeline-line {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 2px;
-            transform: translateX(-50%);
-            overflow: hidden;
-            background: var(--line);
-        }
-
-        .timeline-progress {
-            width: 100%;
-            height: 0;
-            background: #ef4444;
-            transition: height 0.2s ease;
-        }
-
-        .timeline-item {
-            position: relative;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 88px;
-            align-items: center;
-            margin-bottom: 56px;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: 50%;
-            top: 38px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            transform: translateX(-50%);
-            background: #ef4444;
-            box-shadow: 0 0 0 7px rgba(239, 68, 68, 0.16);
-            z-index: 2;
-        }
-
-        .timeline-side.right {
-            grid-column: 2;
-        }
-
-        .timeline-card-wrap {
-            position: relative;
-        }
-
-        .timeline-card-wrap::before {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 20px;
-            background: #fef2f2;
-            filter: blur(14px);
-            opacity: 0.62;
-        }
-
-        .step-badge {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 8px;
-            border-radius: 999px;
-            padding: 5px 16px;
-            background: #ef4444;
-            color: var(--white);
-            font-size: 11px;
-            font-weight: 700;
-            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.18);
-        }
-
-        .timeline-card {
-            position: relative;
-            border: 1px solid #f3f4f6;
-            border-radius: 18px;
-            padding: 22px;
-            background: var(--white);
-            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07);
-        }
-
-        .faq-card,
-        .contact-card {
-            margin-top: 24px;
-            border-radius: 24px;
-            padding: 24px;
-        }
-
-        .faq-item {
-            border: 1px solid var(--line);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .faq-item + .faq-item {
-            margin-top: 12px;
-        }
-
-        .faq-question {
-            width: 100%;
-            border: 0;
-            background: var(--white);
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            color: #1f2937;
-            text-align: left;
-            font: inherit;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .faq-answer {
-            display: none;
-            padding: 0 18px 18px;
-            color: var(--muted);
-            line-height: 1.75;
-            font-size: 13px;
-        }
-
-        .faq-item.is-open .faq-answer {
-            display: block;
-        }
-
-        .faq-icon {
-            transition: transform 0.2s ease;
-        }
-
-        .faq-item.is-open .faq-icon {
-            transform: rotate(180deg);
-        }
-
-        .contact-card p,
-        .footer p {
-            color: var(--muted);
-            line-height: 1.8;
-        }
-
-        .contact-list {
-            margin: 22px 0 0;
-            padding-left: 20px;
-            color: #374151;
-            line-height: 1.8;
-        }
-
-        .contact-list a:hover,
-        .footer a:hover {
-            color: var(--primary);
-            text-decoration: underline;
-        }
-
-        .footer {
-            border-top: 1px solid var(--line);
-            background: var(--bg-soft);
-            padding: 52px 0 24px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr;
-            gap: 48px;
-        }
-
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .footer-brand img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-        }
-
-        .footer h3,
-        .footer h4 {
-            margin: 0 0 14px;
-        }
-
-        .footer ul {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            color: var(--muted);
-            line-height: 2;
-        }
-
-        .footer-bottom {
-            margin-top: 34px;
-            padding-top: 20px;
-            border-top: 1px solid var(--line);
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            flex-wrap: wrap;
-            color: #6b7280;
-            font-size: 13px;
-        }
-
-        .footer-bottom-links {
-            display: flex;
-            gap: 18px;
-        }
-
-        @media (max-width: 960px) {
-            .nav-links,
-            .nav-actions {
-                display: none;
-            }
-
-            .nav-inner {
-                padding-left: 16px;
-                padding-right: 16px;
-            }
-
-            .mobile-toggle {
-                display: inline-flex;
-            }
-
-            .mobile-menu.is-open {
-                display: block;
-            }
-
-            .profil-grid,
-            .terms-grid,
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .timeline-line {
-                left: 8px;
-            }
-
-            .timeline-item {
-                display: block;
-                padding-left: 42px;
-                margin-bottom: 36px;
-            }
-
-            .timeline-dot {
-                left: 8px;
-                top: 34px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .container {
-                width: min(100% - 24px, 1120px);
-            }
-
-            .brand {
-                min-width: 0;
-            }
-
-            .brand img {
-                height: 42px;
-            }
-
-            .brand-title {
-                font-size: 13px;
-            }
-
-            .brand-subtitle {
-                display: none;
-            }
-
-            .hero-inner {
-                padding: 64px 0;
-            }
-
-            .hero-buttons,
-            .footer-bottom,
-            .footer-bottom-links {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            .profil-grid,
-            .terms-grid,
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section {
-                padding: 56px 0;
-            }
-        }
+        html { scroll-behavior: smooth; }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
-<body>
-    <header class="site-navbar" id="siteNavbar">
-        <div class="nav-container nav-inner">
-            <a href="#beranda" class="brand" aria-label="DPRD Kabupaten Banyumas">
-                <img src="{{ asset('assets/img/logo.png') }}" alt="Logo DPRD Kabupaten Banyumas">
+<body class="bg-white text-gray-900 antialiased">
+    @php
+        $loginUrl = route('login.index');
+        $logoUrl = asset('assets/img/logo.png');
+        $heroImageUrl = asset('assets/img/profil.jpg');
+
+        $menuItems = [
+            ['label' => 'Beranda', 'href' => '#beranda'],
+            ['label' => 'Tentang', 'children' => [
+                ['label' => 'Profil Magang', 'href' => '#profil-magang'],
+                ['label' => 'Alur Magang', 'href' => '#alur-magang'],
+                ['label' => 'Syarat & Ketentuan', 'href' => '#syarat-ketentuan'],
+            ]],
+            ['label' => 'Kegiatan', 'children' => [
+                ['label' => 'Absensi', 'href' => $loginUrl],
+                ['label' => 'Logbook', 'href' => $loginUrl],
+                ['label' => 'Tugas', 'href' => $loginUrl],
+            ]],
+            ['label' => 'Dashboard', 'href' => $loginUrl],
+            ['label' => 'Penilaian', 'children' => [
+                ['label' => 'Evaluasi', 'href' => $loginUrl],
+                ['label' => 'Feedback', 'href' => $loginUrl],
+            ]],
+            ['label' => 'Dokumen', 'children' => [
+                ['label' => 'Template', 'href' => $loginUrl],
+                ['label' => 'Upload', 'href' => $loginUrl],
+            ]],
+            ['label' => 'AI Assistant', 'children' => [
+                ['label' => 'Ringkasan', 'href' => $loginUrl],
+                ['label' => 'Laporan Otomatis', 'href' => $loginUrl],
+            ], 'highlight' => true],
+            ['label' => 'Informasi', 'children' => [
+                ['label' => 'Pengumuman', 'href' => '#profil-magang'],
+                ['label' => 'FAQ', 'href' => '#faq'],
+                ['label' => 'Kontak', 'href' => '#kontak-bantuan'],
+            ]],
+        ];
+
+        $profilCards = [
+            [
+                'title' => 'Skema Magang',
+                'items' => [
+                    'Kegiatan berbasis logbook harian',
+                    'Pendampingan oleh mentor instansi',
+                    'Evaluasi berkala selama program',
+                    'Terintegrasi dengan aktivitas kerja instansi',
+                ],
+            ],
+            [
+                'title' => 'Durasi & Pelaksanaan',
+                'items' => [
+                    'Durasi menyesuaikan kebijakan kampus dan instansi asal mahasiswa',
+                    'Waktu/jam kegiatan mengikuti operasional instansi',
+                    'Berbasis aktivitas kerja nyata di lingkungan instansi',
+                ],
+            ],
+            [
+                'title' => 'Bidang Kegiatan',
+                'items' => [
+                    'Administrasi pemerintahan',
+                    'Sistem informasi dan teknologi',
+                    'Pengelolaan data dan dokumentasi',
+                    'Hukum dan kebijakan publik',
+                    'Keuangan dan pengelolaan anggaran',
+                    'Pelayanan publik',
+                ],
+            ],
+            [
+                'title' => 'Output Program',
+                'items' => [
+                    'Laporan kegiatan magang',
+                    'Penilaian kinerja dari mentor',
+                    'Rekap logbook harian',
+                    'Pengalaman kerja profesional',
+                ],
+            ],
+        ];
+
+        $steps = [
+            [
+                'title' => 'Pendaftaran',
+                'items' => ['Mengisi form pendaftaran online', 'Upload berkas (CV, surat pengantar, dll)'],
+            ],
+            [
+                'title' => 'Verifikasi',
+                'items' => ['Seleksi administrasi oleh instansi', 'Penyesuaian bidang magang'],
+            ],
+            [
+                'title' => 'Pelaksanaan',
+                'items' => ['Kegiatan magang di instansi', 'Pengisian logbook harian', 'Pendampingan mentor'],
+            ],
+            [
+                'title' => 'Evaluasi',
+                'items' => ['Penilaian kinerja peserta', 'Review kegiatan oleh mentor'],
+            ],
+            [
+                'title' => 'Selesai',
+                'items' => ['Penyusunan laporan akhir', 'Sertifikat magang'],
+            ],
+        ];
+
+        $faqItems = [
+            [
+                'question' => 'Siapa saja yang dapat mendaftar program magang ini?',
+                'answer' => 'Program ini terbuka bagi mahasiswa aktif yang memenuhi persyaratan administrasi dari kampus dan ketentuan instansi DPRD Banyumas.',
+            ],
+            [
+                'question' => 'Bagaimana alur pendaftaran magang dilakukan?',
+                'answer' => 'Pendaftaran dilakukan secara online melalui sistem, dimulai dari registrasi akun, melengkapi data diri, mengunggah berkas, hingga menunggu proses verifikasi.',
+            ],
+            [
+                'question' => 'Dokumen apa saja yang perlu disiapkan?',
+                'answer' => 'Dokumen umum yang biasanya dibutuhkan meliputi surat pengantar kampus, CV, transkrip nilai, dan dokumen pendukung lain sesuai ketentuan periode magang.',
+            ],
+            [
+                'question' => 'Bagaimana cara memantau status seleksi?',
+                'answer' => 'Status pendaftaran dapat dipantau langsung melalui dashboard akun pada Sistem Informasi Magang setelah proses pengajuan selesai.',
+            ],
+        ];
+    @endphp
+
+    {{-- Navbar --}}
+    <header id="landing-navbar" class="fixed top-0 left-0 z-50 w-full border-b border-red-600 bg-white transition-transform duration-300 ease-in-out">
+        <div class="flex min-h-[84px] w-full items-center justify-between px-10 py-3 xl:px-16 md:min-h-[92px] md:py-4">
+            <a href="#beranda" class="flex items-center gap-3 md:gap-4" aria-label="DPRD Kabupaten Banyumas">
+                <img src="{{ $logoUrl }}" alt="Logo DPRD Kab. Banyumas" class="h-12 w-auto object-contain md:h-14">
                 <div>
-                    <p class="brand-title">DPRD Kabupaten Banyumas</p>
-                    <p class="brand-subtitle">Sistem Informasi Magang Berdampak</p>
+                    <h1 class="font-extrabold leading-tight text-slate-900">DPRD Kabupaten Banyumas</h1>
+                    <p class="text-xs text-slate-500">Sistem Informasi Magang Berdampak</p>
                 </div>
             </a>
 
-            @php
-                $menuItems = [
-                    ['label' => 'Beranda', 'href' => '#beranda'],
-                    ['label' => 'Tentang', 'children' => [
-                        ['label' => 'Profil Magang', 'href' => '#profil-magang'],
-                        ['label' => 'Alur Magang', 'href' => '#alur-magang'],
-                        ['label' => 'Syarat & Ketentuan', 'href' => '#syarat-ketentuan'],
-                    ]],
-                    ['label' => 'Kegiatan', 'children' => [
-                        ['label' => 'Absensi', 'href' => route('login.index')],
-                        ['label' => 'Logbook', 'href' => route('login.index')],
-                        ['label' => 'Tugas', 'href' => route('login.index')],
-                    ]],
-                    ['label' => 'Dashboard', 'href' => route('login.index')],
-                    ['label' => 'Penilaian', 'children' => [
-                        ['label' => 'Evaluasi', 'href' => route('login.index')],
-                        ['label' => 'Feedback', 'href' => route('login.index')],
-                    ]],
-                    ['label' => 'Dokumen', 'children' => [
-                        ['label' => 'Template', 'href' => route('login.index')],
-                        ['label' => 'Upload', 'href' => route('login.index')],
-                    ]],
-                    ['label' => 'AI Assistant', 'children' => [
-                        ['label' => 'Ringkasan', 'href' => route('login.index')],
-                        ['label' => 'Laporan Otomatis', 'href' => route('login.index')],
-                    ]],
-                    ['label' => 'Informasi', 'children' => [
-                        ['label' => 'Pengumuman', 'href' => '#profil-magang'],
-                        ['label' => 'FAQ', 'href' => '#faq'],
-                        ['label' => 'Kontak', 'href' => '#kontak-bantuan'],
-                    ]],
-                ];
-            @endphp
-
-            <nav class="nav-links" aria-label="Navigasi utama">
+            <nav class="hidden self-stretch items-stretch gap-1 lg:flex" aria-label="Navigasi utama">
                 @foreach ($menuItems as $item)
                     @if (isset($item['href']))
-                        <a class="nav-link" href="{{ $item['href'] }}">{{ $item['label'] }}</a>
+                        <a
+                            href="{{ $item['href'] }}"
+                            class="group relative flex h-full items-center px-3 text-sm font-bold text-gray-800 transition-colors duration-200 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-red-600 after:transition-all after:duration-200 after:content-[''] hover:text-red-700 hover:after:w-full {{ $loop->first ? 'text-red-600 after:w-full' : '' }}"
+                        >
+                            {{ $item['label'] }}
+                        </a>
                     @else
-                        <div class="dropdown-item">
-                            <button type="button" class="dropdown-trigger">
+                        <div class="group relative flex h-full items-center">
+                            <button
+                                type="button"
+                                class="relative flex h-full items-center gap-1 px-3 text-sm font-bold text-gray-800 transition-colors duration-200 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-red-600 after:transition-all after:duration-200 after:content-[''] hover:text-red-700 group-hover:after:w-full"
+                            >
                                 {{ $item['label'] }}
-                                <span class="chevron" aria-hidden="true">⌄</span>
+                                <svg class="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
                             </button>
-                            <div class="dropdown-menu">
-                                @foreach ($item['children'] as $child)
-                                    <a href="{{ $child['href'] }}">{{ $child['label'] }}</a>
-                                @endforeach
+
+                            <div class="pointer-events-none absolute left-0 top-full z-50 min-w-52 -translate-y-1 bg-white p-2 opacity-0 shadow-md transition-all duration-150 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
+                                <div class="space-y-1">
+                                    @foreach ($item['children'] as $child)
+                                        <a href="{{ $child['href'] }}" class="block w-full px-3 py-2 text-left text-sm text-gray-800 transition-colors duration-200 hover:text-red-600">
+                                            {{ $child['label'] }}
+                                        </a>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     @endif
                 @endforeach
             </nav>
 
-            <div class="nav-actions" aria-hidden="true">
-                <button type="button" class="icon-button" title="Bahasa">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 0 20"></path><path d="M12 2a15.3 15.3 0 0 0 0 20"></path></svg>
+            <div class="hidden items-center gap-2 text-slate-700 lg:flex" aria-hidden="true">
+                <button type="button" class="p-2 transition-colors hover:text-red-700" aria-label="Bahasa">
+                    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M2 12h20" />
+                        <path d="M12 2a15.3 15.3 0 0 1 0 20" />
+                        <path d="M12 2a15.3 15.3 0 0 0 0 20" />
+                    </svg>
                 </button>
-                <button type="button" class="icon-button" title="Cari">
-                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+                <button type="button" class="p-2 transition-colors hover:text-red-700" aria-label="Cari">
+                    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35" />
+                    </svg>
                 </button>
             </div>
 
-            <button type="button" class="mobile-toggle" id="mobileToggle" aria-controls="mobileMenu" aria-expanded="false" aria-label="Buka menu">
-                <svg class="menu-icon" viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M3 6h18"></path><path d="M3 18h18"></path></svg>
-                <svg class="close-icon" viewBox="0 0 24 24" style="display:none"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+            <button id="mobile-menu-button" type="button" class="p-2 lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu">
+                <svg id="mobile-menu-open-icon" class="h-[22px] w-[22px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 12h16" />
+                    <path d="M4 6h16" />
+                    <path d="M4 18h16" />
+                </svg>
+                <svg id="mobile-menu-close-icon" class="hidden h-[22px] w-[22px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                </svg>
             </button>
         </div>
-        <div class="container mobile-menu" id="mobileMenu">
+
+        <div id="mobile-menu" class="hidden border-t border-gray-200 bg-white px-4 pb-4 lg:hidden">
             @foreach ($menuItems as $item)
-                <div class="mobile-menu-group">
+                <div class="py-2">
                     @if (isset($item['href']))
-                        <a href="{{ $item['href'] }}">{{ $item['label'] }}</a>
+                        <a href="{{ $item['href'] }}" class="block text-sm font-bold text-gray-800">{{ $item['label'] }}</a>
                     @else
-                        <p>{{ $item['label'] }}</p>
-                        @foreach ($item['children'] as $child)
-                            <a href="{{ $child['href'] }}" class="mobile-sub-link">{{ $child['label'] }}</a>
-                        @endforeach
+                        <p class="text-sm font-bold text-gray-800">{{ $item['label'] }}</p>
+                        <div class="space-y-1 pl-3 pt-1 text-sm text-gray-600">
+                            @foreach ($item['children'] as $child)
+                                <a href="{{ $child['href'] }}" class="block hover:text-red-600">{{ $child['label'] }}</a>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
             @endforeach
@@ -883,205 +228,265 @@
     </header>
 
     <main>
-        <section class="hero" id="beranda">
-            <div class="container hero-inner">
-                <div class="hero-copy">
-                    <p class="eyebrow">DPRD Kabupaten Banyumas</p>
-                    <h1>Sistem Informasi Magang Berdampak</h1>
-                    <p>Platform resmi untuk pendaftaran, verifikasi berkas, logbook, monitoring mentor, penilaian, dan laporan akhir program magang DPRD Kabupaten Banyumas.</p>
-                    <div class="hero-buttons">
-                        <a class="btn btn-primary" href="{{ route('login.index') }}">Masuk Sistem</a>
-                        <a class="btn btn-outline" href="{{ route('login.index') }}">Daftar Magang</a>
+        {{-- Hero --}}
+        <section id="beranda" class="relative min-h-[calc(100vh-96px)] bg-cover bg-center bg-no-repeat" style="background-image: url('{{ $heroImageUrl }}');">
+            <div class="absolute inset-0 z-0 bg-slate-950/55"></div>
+
+            <div class="relative z-10 flex min-h-[calc(100vh-96px)] w-full items-center px-10 pt-[96px] xl:px-16">
+                <div class="max-w-4xl text-white">
+                    <p class="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-red-100">DPRD Kabupaten Banyumas</p>
+                    <h1 class="mb-4 text-4xl font-bold leading-tight md:text-6xl">Sistem Informasi Magang Berdampak</h1>
+                    <p class="mb-6 text-base leading-7 text-slate-100 md:text-lg">
+                        Platform resmi untuk pendaftaran, verifikasi berkas, logbook, monitoring mentor, penilaian, dan laporan akhir program magang DPRD Kabupaten Banyumas.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a href="{{ $loginUrl }}" class="bg-red-700 px-6 py-3 font-semibold text-white transition-colors hover:bg-red-800">Masuk Sistem</a>
+                        <a href="{{ $loginUrl }}" class="border border-white px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10">Daftar Magang</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="section section-tight" id="profil-magang">
-            <div class="container">
-                <h2 class="section-title">Profil Program Magang</h2>
-                <p class="section-lead">Program magang DPRD Banyumas memberikan kesempatan bagi mahasiswa untuk terlibat langsung dalam lingkungan kerja pemerintahan serta mengembangkan kemampuan teknis dan keterampilan profesional secara terstruktur melalui pendampingan mentor, pencatatan logbook harian, serta evaluasi berkala.</p>
+        {{-- ProfilMagang --}}
+        <section id="profil-magang" class="bg-white pt-12 pb-6">
+            <div class="mx-auto max-w-6xl px-4">
+                <h2 class="text-2xl font-semibold text-gray-900">Profil Program Magang</h2>
+                <p class="mt-3 w-full leading-relaxed text-gray-600">
+                    Program magang DPRD Banyumas memberikan kesempatan bagi mahasiswa untuk terlibat langsung dalam lingkungan kerja pemerintahan serta mengembangkan kemampuan teknis (hard skills) dan keterampilan profesional (soft skills) secara terstruktur melalui pendampingan mentor, pencatatan logbook harian, serta evaluasi berkala agar proses pembelajaran berjalan optimal dan sesuai kebutuhan instansi.
+                </p>
 
-                <div class="profil-grid">
-                    <article class="info-card">
-                        <h3>Skema Magang</h3>
-                        <ol class="ordered-list">
-                            <li>Kegiatan berbasis logbook harian</li>
-                            <li>Pendampingan oleh mentor instansi</li>
-                            <li>Evaluasi berkala selama program</li>
-                            <li>Terintegrasi dengan aktivitas kerja instansi</li>
-                        </ol>
-                    </article>
-                    <article class="info-card">
-                        <h3>Durasi & Pelaksanaan</h3>
-                        <ol class="ordered-list">
-                            <li>Durasi menyesuaikan kebijakan kampus dan instansi asal mahasiswa</li>
-                            <li>Waktu kegiatan mengikuti operasional instansi</li>
-                            <li>Berbasis aktivitas kerja nyata di lingkungan instansi</li>
-                        </ol>
-                    </article>
-                    <article class="info-card">
-                        <h3>Bidang Kegiatan</h3>
-                        <ol class="ordered-list">
-                            <li>Administrasi pemerintahan</li>
-                            <li>Sistem informasi dan teknologi</li>
-                            <li>Pengelolaan data dan dokumentasi</li>
-                            <li>Hukum dan kebijakan publik</li>
-                        </ol>
-                    </article>
-                    <article class="info-card">
-                        <h3>Output Program</h3>
-                        <ol class="ordered-list">
-                            <li>Laporan kegiatan magang</li>
-                            <li>Penilaian kinerja dari mentor</li>
-                            <li>Rekap logbook harian</li>
-                            <li>Pengalaman kerja profesional</li>
-                        </ol>
-                    </article>
+                <div class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    @foreach ($profilCards as $card)
+                        <article class="rounded-sm border border-gray-200 bg-white p-4">
+                            <h3 class="mb-2 text-sm font-semibold text-gray-900">{{ $card['title'] }}</h3>
+                            <ol class="list-decimal space-y-1 pl-4 text-sm text-gray-600">
+                                @foreach ($card['items'] as $item)
+                                    <li>{{ $item }}</li>
+                                @endforeach
+                            </ol>
+                        </article>
+                    @endforeach
                 </div>
             </div>
         </section>
 
-        <section class="section" id="alur-magang">
-            <div class="container">
-                <h2 class="section-title center">Alur Magang</h2>
-                <p class="section-lead center">Proses pelaksanaan magang di DPRD Banyumas secara sistematis dan terstruktur.</p>
+        {{-- AlurMagang --}}
+        <section id="alur-magang" class="bg-white pt-6 pb-12">
+            <div class="relative mx-auto max-w-5xl px-4">
+                <h2 class="text-center text-2xl font-semibold text-gray-900">Alur Magang</h2>
+                <p class="mx-auto mt-2 max-w-2xl text-center text-gray-600">Proses pelaksanaan magang di DPRD Banyumas secara sistematis dan terstruktur</p>
 
-                <div class="timeline-wrap" id="timelineWrap">
-                    <div class="timeline-line" aria-hidden="true">
-                        <div class="timeline-progress" id="timelineProgress"></div>
-                    </div>
+                <div id="timeline-line" class="absolute left-1/2 top-20 hidden h-full w-[2px] -translate-x-1/2 overflow-hidden bg-gray-200 md:block">
+                    <div id="timeline-progress" class="w-full bg-red-500 transition-all duration-300" style="height: 0%;"></div>
+                </div>
+                <div class="absolute left-4 top-20 bottom-0 w-[2px] bg-gray-200 opacity-70 md:hidden"></div>
 
-                    @php
-                        $steps = [
-                            ['title' => 'Pendaftaran', 'items' => ['Mengisi form pendaftaran online', 'Upload berkas (CV, surat pengantar, dll)']],
-                            ['title' => 'Verifikasi', 'items' => ['Seleksi administrasi oleh instansi', 'Penyesuaian bidang magang']],
-                            ['title' => 'Pelaksanaan', 'items' => ['Kegiatan magang di instansi', 'Pengisian logbook harian', 'Pendampingan mentor']],
-                            ['title' => 'Evaluasi', 'items' => ['Penilaian kinerja peserta', 'Review kegiatan oleh mentor']],
-                            ['title' => 'Selesai', 'items' => ['Penyusunan laporan akhir', 'Sertifikat magang']],
-                        ];
-                    @endphp
-
+                <div class="mt-10">
                     @foreach ($steps as $index => $step)
-                        @php($isRight = $index % 2 === 1)
-                        <div class="timeline-item">
-                            <span class="timeline-dot" aria-hidden="true"></span>
-                            @if ($isRight)
-                                <div></div>
-                            @endif
-                            <div class="timeline-side {{ $isRight ? 'right' : 'left' }}">
-                                <span class="step-badge">Step {{ $index + 1 }}</span>
-                                <div class="timeline-card-wrap">
-                                    <article class="timeline-card">
-                                        <h3>{{ $step['title'] }}</h3>
-                                        <ul class="bullet-list">
-                                            @foreach ($step['items'] as $item)
-                                                <li>{{ $item }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </article>
-                                </div>
+                        @php($isLeft = $index % 2 === 0)
+                        <div class="relative mb-16 flex items-center justify-between">
+                            <div class="timeline-dot absolute left-4 z-10 h-4 w-4 -translate-x-1/2 scale-75 rounded-full bg-red-500 opacity-30 shadow-[0_0_0_6px_rgba(239,68,68,0.15)] transition-all duration-300 md:left-1/2"></div>
+
+                            <div class="w-full pl-10 md:w-[42%] md:pl-0 md:pr-6 md:text-left">
+                                @if ($isLeft)
+                                    <span class="mb-1 inline-block rounded-full bg-red-500 px-4 py-1 text-xs text-white shadow-md">Step {{ $index + 1 }}</span>
+                                    <div class="relative">
+                                        <div class="absolute -inset-2 rounded-xl bg-red-50 opacity-40 blur-xl"></div>
+                                        <div class="relative rounded-xl border border-gray-100 bg-white p-5 text-sm shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.1)]">
+                                            <h3 class="text-base font-semibold text-gray-900">{{ $step['title'] }}</h3>
+                                            <ul class="mt-1 list-inside list-disc space-y-1 text-sm text-gray-600">
+                                                @foreach ($step['items'] as $item)
+                                                    <li>{{ $item }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
+
+                            <div class="hidden w-[42%] md:block">
+                                @unless ($isLeft)
+                                    <div class="w-full pl-6 text-left">
+                                        <span class="mb-1 inline-block rounded-full bg-red-500 px-4 py-1 text-xs text-white shadow-md">Step {{ $index + 1 }}</span>
+                                        <div class="relative">
+                                            <div class="absolute -inset-2 rounded-xl bg-red-50 opacity-40 blur-xl"></div>
+                                            <div class="relative rounded-xl border border-gray-100 bg-white p-5 text-sm shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.1)]">
+                                                <h3 class="text-base font-semibold text-gray-900">{{ $step['title'] }}</h3>
+                                                <ul class="mt-1 list-inside list-disc space-y-1 text-sm text-gray-600">
+                                                    @foreach ($step['items'] as $item)
+                                                        <li>{{ $item }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endunless
+                            </div>
+
+                            @unless ($isLeft)
+                                <div class="w-full pl-10 md:hidden">
+                                    <span class="mb-1 inline-block rounded-full bg-red-500 px-4 py-1 text-xs text-white shadow-md">Step {{ $index + 1 }}</span>
+                                    <div class="relative">
+                                        <div class="absolute -inset-2 rounded-xl bg-red-50 opacity-40 blur-xl"></div>
+                                        <div class="relative rounded-xl border border-gray-100 bg-white p-5 text-sm shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.1)]">
+                                            <h3 class="text-base font-semibold text-gray-900">{{ $step['title'] }}</h3>
+                                            <ul class="mt-1 list-inside list-disc space-y-1 text-sm text-gray-600">
+                                                @foreach ($step['items'] as $item)
+                                                    <li>{{ $item }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endunless
                         </div>
                     @endforeach
                 </div>
             </div>
         </section>
 
-        <section class="section section-soft" id="syarat-ketentuan">
-            <div class="container">
-                <h2 class="section-title center">Syarat & Ketentuan</h2>
-                <p class="section-lead center">Ketentuan dan persyaratan yang harus dipenuhi oleh mahasiswa sebelum mengikuti program magang di DPRD Banyumas.</p>
+        {{-- SyaratKetentuan --}}
+        <section id="syarat-ketentuan" class="bg-gray-50 pt-6 pb-12">
+            <div class="mx-auto max-w-5xl px-4">
+                <h2 class="text-center text-2xl font-semibold text-gray-900">Syarat & Ketentuan</h2>
+                <p class="mx-auto mt-2 max-w-2xl text-center text-gray-600">
+                    Ketentuan dan persyaratan yang harus dipenuhi oleh mahasiswa sebelum mengikuti program magang di DPRD Banyumas
+                </p>
 
-                <div class="terms-grid">
-                    <article class="term-card">
-                        <h3>Persyaratan Peserta</h3>
-                        <ol class="ordered-list">
+                <div class="mt-10 grid gap-6 md:grid-cols-3">
+                    <div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+                        <h3 class="mb-3 font-semibold text-gray-900">Persyaratan Peserta</h3>
+                        <ol class="list-inside list-decimal space-y-2 text-sm text-gray-600">
                             <li>Mahasiswa aktif dari perguruan tinggi</li>
                             <li>Memiliki surat pengantar dari kampus</li>
                             <li>Bersedia mengikuti seluruh rangkaian kegiatan magang</li>
                             <li>Memiliki minat di bidang pemerintahan dan pelayanan publik</li>
                         </ol>
-                    </article>
-                    <article class="term-card">
-                        <h3>Ketentuan Umum</h3>
-                        <ol class="ordered-list">
+                    </div>
+
+                    <div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+                        <h3 class="mb-3 font-semibold text-gray-900">Ketentuan Umum</h3>
+                        <ol class="list-inside list-decimal space-y-2 text-sm text-gray-600">
                             <li>Durasi magang menyesuaikan kebijakan kampus dan instansi</li>
                             <li>Jam kegiatan mengikuti operasional instansi</li>
                             <li>Peserta wajib menjaga etika dan kedisiplinan</li>
                             <li>Wajib mengikuti arahan mentor dan pembimbing</li>
                         </ol>
-                    </article>
-                    <article class="term-card">
-                        <h3>Berkas yang Diperlukan</h3>
-                        <ol class="ordered-list">
+                    </div>
+
+                    <div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+                        <h3 class="mb-3 font-semibold text-gray-900">Berkas yang Diperlukan</h3>
+                        <ol class="list-inside list-decimal space-y-2 text-sm text-gray-600">
                             <li>Curriculum Vitae (CV)</li>
                             <li>Surat pengantar dari kampus</li>
                             <li>Transkrip nilai (opsional)</li>
-                            <li>Dokumen pendukung lainnya jika diperlukan</li>
+                            <li>Dokumen pendukung lainnya (jika diperlukan)</li>
                         </ol>
-                    </article>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="section" id="faq">
-            <div class="container">
-                <h2 class="section-title">FAQ Magang Berdampak</h2>
-                <div class="faq-card" id="faqList">
-                    <article class="faq-item is-open">
-                        <button class="faq-question" type="button" aria-expanded="true">
-                            <span>Siapa saja yang dapat mendaftar program magang ini?</span>
-                            <span class="faq-icon">⌄</span>
-                        </button>
-                        <div class="faq-answer">Program ini terbuka bagi mahasiswa aktif yang memenuhi persyaratan administrasi dari kampus dan ketentuan instansi DPRD Banyumas.</div>
-                    </article>
-                    <article class="faq-item">
-                        <button class="faq-question" type="button" aria-expanded="false">
-                            <span>Bagaimana alur pendaftaran magang dilakukan?</span>
-                            <span class="faq-icon">⌄</span>
-                        </button>
-                        <div class="faq-answer">Pendaftaran dilakukan secara online melalui sistem, dimulai dari registrasi akun, melengkapi data diri, mengunggah berkas, hingga menunggu proses verifikasi.</div>
-                    </article>
-                    <article class="faq-item">
-                        <button class="faq-question" type="button" aria-expanded="false">
-                            <span>Dokumen apa saja yang perlu disiapkan?</span>
-                            <span class="faq-icon">⌄</span>
-                        </button>
-                        <div class="faq-answer">Dokumen umum yang biasanya dibutuhkan meliputi surat pengantar kampus, CV, transkrip nilai, dan dokumen pendukung lain sesuai ketentuan periode magang.</div>
-                    </article>
-                    <article class="faq-item">
-                        <button class="faq-question" type="button" aria-expanded="false">
-                            <span>Bagaimana cara memantau status seleksi?</span>
-                            <span class="faq-icon">⌄</span>
-                        </button>
-                        <div class="faq-answer">Status pendaftaran dapat dipantau langsung melalui dashboard akun pada Sistem Informasi Magang setelah proses pengajuan selesai.</div>
-                    </article>
+        {{-- FAQSection --}}
+        <section id="faq" class="mx-auto max-w-6xl px-4">
+            <h2 class="mb-4 text-2xl font-semibold text-gray-900">FAQ Magang Berdampak</h2>
+
+            <div class="rounded-2xl border border-gray-100 bg-white p-5 shadow-md md:p-8">
+                <div class="space-y-3">
+                    @foreach ($faqItems as $index => $item)
+                        <article class="faq-item rounded-xl border border-gray-200 bg-white">
+                            <button
+                                type="button"
+                                class="faq-toggle flex w-full items-center justify-between gap-4 rounded-xl px-4 py-4 text-left text-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                                aria-expanded="{{ $index === 0 ? 'true' : 'false' }}"
+                            >
+                                <span class="text-sm font-semibold md:text-base">{{ $item['question'] }}</span>
+                                <svg class="faq-chevron h-5 w-5 shrink-0 text-gray-500 transition-transform duration-300 {{ $index === 0 ? 'rotate-180' : 'rotate-0' }}" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+
+                            <div class="faq-panel grid transition-all duration-300 ease-in-out {{ $index === 0 ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0' }}">
+                                <div class="overflow-hidden">
+                                    <p class="px-4 pb-4 text-sm leading-7 text-gray-600">{{ $item['answer'] }}</p>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
                 </div>
             </div>
         </section>
 
-        <section class="section section-soft" id="kontak-bantuan">
-            <div class="container">
-                <h2 class="section-title">Kontak & Bantuan</h2>
-                <div class="contact-card">
-                    <p>Pertanyaan seputar Magang Berdampak? Silakan hubungi unit layanan akademik.</p>
-                    <ul class="contact-list">
-                        <li><strong>Email:</strong> <a href="mailto:sekwan.inter@gmail.com">sekwan.inter@gmail.com</a></li>
-                        <li><strong>WhatsApp:</strong> <a href="https://wa.me/6285175394358" target="_blank" rel="noreferrer">+62 85175394358</a></li>
-                    </ul>
-                </div>
+        {{-- KontakBantuanSection --}}
+        <section id="kontak-bantuan" class="mx-auto mt-12 max-w-6xl px-4">
+            <h2 class="mb-4 text-2xl font-semibold text-gray-900">Kontak & Bantuan</h2>
+
+            <div class="rounded-2xl border border-gray-100 bg-white p-6 shadow-md md:p-8">
+                <p class="text-sm leading-7 text-gray-600">
+                    Pertanyaan seputar Magang Berdampak? Silakan hubungi unit layanan akademik.
+                </p>
+
+                <ul class="mt-5 list-disc space-y-3 pl-5 text-sm text-gray-700">
+                    <li>
+                        <span class="font-semibold">Email:</span>
+                        <a href="mailto:sekwan.inter@gmail.com" class="text-gray-600 hover:underline">sekwan.inter@gmail.com</a>
+                    </li>
+                    <li>
+                        <span class="font-semibold">WhatsApp:</span>
+                        <a href="https://wa.me/6285175394358" target="_blank" rel="noreferrer" class="text-gray-600 hover:underline">+62 85175394358</a>
+                    </li>
+                </ul>
             </div>
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
+    {{-- FooterSection --}}
+    <footer class="mt-12 w-full border-t border-gray-200 bg-gray-50">
+        <div class="mx-auto max-w-6xl px-4 py-12 md:py-14">
+            <div>
+                <div class="flex items-center gap-3">
+                    <img src="{{ $logoUrl }}" alt="Logo DPRD Kab. Banyumas" class="h-12 w-auto object-contain">
+                    <h3 class="text-lg font-semibold text-gray-900">DPRD Kabupaten Banyumas</h3>
+                </div>
+                <p class="mt-4 max-w-[320px] text-sm leading-7 text-gray-600">
+                    Platform informasi dan pendaftaran Magang Berdampak DPRD Kabupaten Banyumas.
+                </p>
+            </div>
+
+            <div class="mt-10 grid grid-cols-1 gap-10 md:grid-cols-3">
                 <div>
-                    <div class="footer-brand">
-                        <img src="{{ asset('assets/img/logo.png') }}" alt="Logo DPRD Kabupaten Banyumas">
-                        <h3>DPRD Kabupaten Banyumas</h3>
+                    <h4 class="mb-4 text-sm font-semibold text-gray-900">Kontak</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="mailto:sekwan.inter@gmail.com" class="hover:text-gray-800 hover:underline">sekwan.inter@gmail.com</a></li>
+                        <li><a href="https://wa.me/6285175394358" target="_blank" rel="noreferrer" class="hover:text-gray-800 hover:underline">+62 85175394358</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 text-sm font-semibold text-gray-900">Alamat</h4>
+                    <p class="text-sm leading-7 text-gray-600">
+                        Jl. Kabupaten No.1, Purwokerto, Sokanegara, Kec. Purwokerto Tim., Kabupaten Banyumas, Jawa Tengah 53115
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="mb-4 text-sm font-semibold text-gray-900">Tautan Cepat</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#profil-magang" class="hover:text-gray-800 hover:underline">Profil Magang</a></li>
+                        <li><a href="{{ $loginUrl }}" class="hover:text-gray-800 hover:underline">Pendaftaran</a></li>
+                        <li><a href="#faq" class="hover:text-gray-800 hover:underline">FAQ</a></li>
+                        <li><a href="#kontak-bantuan" class="hover:text-gray-800 hover:underline">Kontak &amp; Bantuan</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 border-t border-gray-200 pt-4">
+                <div class="flex flex-col gap-3 text-sm text-gray-500 md:flex-row md:items-center md:justify-between">
+                    <p>© 2025 DPRD Kabupaten Banyumas. All rights reserved.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="hover:text-gray-700 hover:underline">Kebijakan Privasi</a>
+                        <a href="#syarat-ketentuan" class="hover:text-gray-700 hover:underline">Syarat &amp; Ketentuan</a>
                     </div>
                     <p>Platform informasi dan pendaftaran Magang Berdampak DPRD Kabupaten Banyumas.</p>
                 </div>
@@ -1113,68 +518,83 @@
     </footer>
 
     <script>
-        (function () {
-            const navbar = document.getElementById('siteNavbar');
-            const mobileToggle = document.getElementById('mobileToggle');
-            const mobileMenu = document.getElementById('mobileMenu');
-            const timelineWrap = document.getElementById('timelineWrap');
-            const timelineProgress = document.getElementById('timelineProgress');
+        document.addEventListener('DOMContentLoaded', function () {
+            const navbar = document.getElementById('landing-navbar');
+            const mobileButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('mobile-menu-open-icon');
+            const closeIcon = document.getElementById('mobile-menu-close-icon');
+            const timelineLine = document.getElementById('timeline-line');
+            const timelineProgress = document.getElementById('timeline-progress');
+            const timelineDots = document.querySelectorAll('.timeline-dot');
 
-            function updateNavbar() {
+            const setMobileOpen = function (isOpen) {
+                mobileButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                mobileMenu.classList.toggle('hidden', !isOpen);
+                openIcon.classList.toggle('hidden', isOpen);
+                closeIcon.classList.toggle('hidden', !isOpen);
+            };
+
+            const handleScroll = function () {
                 const scrollY = window.scrollY;
                 const showThreshold = window.innerHeight * 0.45;
 
                 if (scrollY <= 20) {
-                    navbar.classList.remove('is-hidden', 'is-scrolled');
+                    navbar.classList.remove('-translate-y-full', 'shadow-sm');
                 } else if (scrollY > showThreshold) {
-                    navbar.classList.remove('is-hidden');
-                    navbar.classList.add('is-scrolled');
+                    navbar.classList.remove('-translate-y-full');
+                    navbar.classList.add('shadow-sm');
                 } else {
-                    navbar.classList.add('is-hidden');
-                    navbar.classList.remove('is-scrolled');
+                    navbar.classList.add('-translate-y-full');
+                    navbar.classList.remove('shadow-sm');
                 }
-            }
 
-            function updateTimeline() {
-                if (!timelineWrap || !timelineProgress) return;
-                const rect = timelineWrap.getBoundingClientRect();
+                if (!timelineLine || !timelineProgress) return;
+                const rect = timelineLine.getBoundingClientRect();
                 const visible = window.innerHeight - rect.top;
                 const percent = Math.max(0, Math.min(1, visible / rect.height));
-                timelineProgress.style.height = (percent * 100) + '%';
-            }
+                timelineProgress.style.height = `${percent * 100}%`;
 
-            window.addEventListener('scroll', function () {
-                updateNavbar();
-                updateTimeline();
-            }, { passive: true });
+                timelineDots.forEach(function (dot, index) {
+                    const dotThreshold = (index + 1) / Math.max(timelineDots.length, 1) - 0.08;
+                    const isActive = percent >= dotThreshold;
+                    dot.classList.toggle('scale-100', isActive);
+                    dot.classList.toggle('opacity-100', isActive);
+                    dot.classList.toggle('scale-75', !isActive);
+                    dot.classList.toggle('opacity-30', !isActive);
+                });
+            };
 
-            mobileToggle.addEventListener('click', function () {
-                const isOpen = mobileMenu.classList.toggle('is-open');
-                mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-                mobileToggle.querySelector('.menu-icon').style.display = isOpen ? 'none' : 'block';
-                mobileToggle.querySelector('.close-icon').style.display = isOpen ? 'block' : 'none';
+            mobileButton.addEventListener('click', function () {
+                setMobileOpen(mobileMenu.classList.contains('hidden'));
             });
 
             mobileMenu.querySelectorAll('a').forEach(function (link) {
                 link.addEventListener('click', function () {
-                    mobileMenu.classList.remove('is-open');
-                    mobileToggle.setAttribute('aria-expanded', 'false');
-                    mobileToggle.querySelector('.menu-icon').style.display = 'block';
-                    mobileToggle.querySelector('.close-icon').style.display = 'none';
+                    setMobileOpen(false);
                 });
             });
 
-            document.querySelectorAll('.faq-question').forEach(function (button) {
+            document.querySelectorAll('.faq-toggle').forEach(function (button) {
                 button.addEventListener('click', function () {
                     const item = button.closest('.faq-item');
-                    const isOpen = item.classList.toggle('is-open');
-                    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    const panel = item.querySelector('.faq-panel');
+                    const chevron = item.querySelector('.faq-chevron');
+                    const isOpen = button.getAttribute('aria-expanded') === 'true';
+
+                    button.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+                    panel.classList.toggle('grid-rows-[1fr]', !isOpen);
+                    panel.classList.toggle('opacity-100', !isOpen);
+                    panel.classList.toggle('grid-rows-[0fr]', isOpen);
+                    panel.classList.toggle('opacity-0', isOpen);
+                    chevron.classList.toggle('rotate-180', !isOpen);
+                    chevron.classList.toggle('rotate-0', isOpen);
                 });
             });
 
-            updateNavbar();
-            updateTimeline();
-        })();
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
+        });
     </script>
 </body>
 </html>
