@@ -7,7 +7,6 @@ use App\Models\History;
 use App\Models\Peserta;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class PegawaiController extends Controller
@@ -86,11 +85,13 @@ class PegawaiController extends Controller
                 'foto' => 'image|file|max:1024',
             ]);
 
-            if ($request->file('foto')) {
-                Storage::disk('public')->delete($pegawai->foto);
-                Storage::delete($pegawai->foto);
+            if ($request->hasFile('foto')) {
+                if ($pegawai->foto) {
+                    Storage::disk('public')->delete($pegawai->foto);
+                }
+
                 $validatedData['foto'] = $request->file('foto')->store('foto', 'public');
-            }else {
+            } else {
                 $validatedData['foto'] = $pegawai->foto;
             }
             
