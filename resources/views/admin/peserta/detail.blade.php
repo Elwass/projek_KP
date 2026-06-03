@@ -168,18 +168,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    {{-- form jadwal --}}
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="jadwal" class="form-label">Jadwal</label>
-                            <input type="text" class="form-control" id="jadwal" value="{{ $jadwal }}" name="jadwal" readonly>
-                        </div>
-                    </div>
                     {{-- form cv --}}
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="cv" class="form-label">Curriculum vitae (CV)</label>
-                            <p class="mt-2"><a href="{{ asset('storage/'.$peserta->cv) }}">download file</a></p>
+                            <p class="mt-2"><a href="{{ route('file.pendaftar', [$peserta->id_pendaftar, 'cv']) }}">download file</a></p>
                         </div>
                     </div>
                 </div>
@@ -188,7 +181,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="pengajuan" class="form-label">Dokumen Pengajuan PKL</label>
-                            <p class="mt-2"><a href="{{ asset('storage/'.$peserta->pengajuan) }}">download file</a></p>
+                            <p class="mt-2"><a href="{{ route('file.pendaftar', [$peserta->id_pendaftar, 'pengajuan']) }}">download file</a></p>
                         </div>
                     </div>
                 </div>
@@ -197,7 +190,7 @@
                     <div class="col-md-6">
                         <label for="foto" class="form-label">Pas Photo</label>
                         <p>
-                            <img src="{{ asset('storage/'.$peserta->foto) }}" style="width: 150px">
+                            <img src="{{ route('file.pendaftar', [$peserta->id_pendaftar, 'foto']) }}" style="width: 150px">
                         </p>
                     </div>
                 </div>

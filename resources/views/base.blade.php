@@ -17,41 +17,8 @@
 
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="/" class="brand-link">
-                <img src="{{ asset('assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">Sistem<b>PKL</b></span>
-            </a>
-
             <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                @auth
-                @if (auth()->user()->role == "peserta")
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <!-- Memuat foto profil dari direktori storage/foto/ -->
-                        <img src="{{ asset('storage/' . auth()->user()->foto) }}" class="img-circle elevation-2" alt="User Image">
-                        <!-- Menggunakan auth()->user()->foto untuk mendapatkan nama file gambar dari pengguna yang sedang login -->
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">{{ auth()->user()->username }}</a>
-                    </div>
-                </div>
-                @else
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <!-- Memuat foto profil dari direktori storage/foto/ -->
-                        <img src="{{ asset('storage/' . auth()->user()->foto) }}" class="img-circle elevation-2" alt="User Image">
-                        <!-- Menggunakan auth()->user()->foto untuk mendapatkan nama file gambar dari pengguna yang sedang login -->
-                    </div>
-                    <div class="info">
-                        <a href="{{ route('admin.pegawai.edit', auth()->user()->id) }}" class="d-block">{{ auth()->user()->username }}</a>
-                    </div>
-                </div>
-                @endif
-                @endauth
-
+            <div class="sidebar pt-3">
                 <!-- Sidebar Menu -->
                 @yield('sidebar')
             </div>

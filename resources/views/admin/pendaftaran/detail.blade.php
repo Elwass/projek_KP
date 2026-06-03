@@ -155,7 +155,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="cv" class="form-label">Curriculum vitae (CV)</label>
-                            <p class="mt-2"><a href="{{ asset('storage/'.$pendaftar->cv) }}">download file</a></p>
+                            <p class="mt-2"><a href="{{ route('file.pendaftar', [$pendaftar->id, 'cv']) }}">download file</a></p>
                         </div>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="pengajuan" class="form-label">Dokumen Pengajuan PKL</label>
-                            <p class="mt-2"><a href="{{ asset('storage/'.$pendaftar->pengajuan) }}">download file</a></p>
+                            <p class="mt-2"><a href="{{ route('file.pendaftar', [$pendaftar->id, 'pengajuan']) }}">download file</a></p>
                         </div>
                     </div>
                 </div>
@@ -173,7 +173,7 @@
                     <div class="col-md-6">
                         <label for="foto" class="form-label">Pas Photo</label>
                         <p>
-                            <img src="{{ asset('storage/'.$pendaftar->foto) }}" style="width: 150px">
+                            <img src="{{ route('file.pendaftar', [$pendaftar->id, 'foto']) }}" style="width: 150px">
                         </p>
                     </div>
                 </div>
