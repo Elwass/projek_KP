@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pendaftar;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 
 class PesertaController extends Controller
 {
@@ -234,73 +232,6 @@ class PesertaController extends Controller
             'user' => $user,
             'pendaftar' => $pendaftar,
         ]);
-    }
-
-    public function updateBiodata(Request $request)
-    {
-        $user = auth()->user();
-        $pendaftar = $user->pendaftar()->first();
-
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'username' => [
-                'required',
-                'max:255',
-                Rule::unique('users', 'username')->ignore($user->id),
-            ],
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                Rule::unique('users', 'email')->ignore($user->id),
-            ],
-            'tempat_lahir' => 'nullable|max:255',
-            'tgl_lahir' => 'nullable|date',
-            'alamat' => 'nullable|max:255',
-            'agama' => 'nullable|max:255',
-            'jk' => 'nullable|in:pria,perempuan',
-            'no_telp' => 'nullable|max:255',
-            'no_ktp' => 'nullable|max:255',
-            'universitas' => 'nullable|max:255',
-            'nim' => 'nullable|max:255',
-            'jurusan' => 'nullable|max:255',
-            'foto' => 'nullable|image|file|max:1024',
-        ]);
-
-        $foto = $user->foto;
-        if ($request->file('foto')) {
-            if ($foto) {
-                Storage::disk('public')->delete($foto);
-                Storage::delete($foto);
-            }
-            $foto = $request->file('foto')->store('foto', 'public');
-        }
-
-        User::where('id', $user->id)->update([
-            'name' => $validatedData['name'],
-            'username' => $validatedData['username'],
-            'email' => $validatedData['email'],
-            'tempat_lahir' => $validatedData['tempat_lahir'],
-            'tgl_lahir' => $validatedData['tgl_lahir'],
-            'alamat' => $validatedData['alamat'],
-            'agama' => $validatedData['agama'],
-            'jk' => $validatedData['jk'],
-            'no_telp' => $validatedData['no_telp'],
-            'no_ktp' => $validatedData['no_ktp'],
-            'foto' => $foto,
-        ]);
-
-        if ($pendaftar) {
-            Pendaftar::where('id', $pendaftar->id)
-                ->where('id_user', $user->id)
-                ->update([
-                    'universitas' => $validatedData['universitas'] ?: $pendaftar->universitas,
-                    'nim' => $validatedData['nim'] ?: $pendaftar->nim,
-                    'jurusan' => $validatedData['jurusan'] ?: $pendaftar->jurusan,
-                ]);
-        }
-
-        return redirect(route('siswa.biodata'))->with('success', 'Biodata berhasil diperbarui');
     }
 
     public function hapus()
