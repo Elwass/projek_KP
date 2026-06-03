@@ -19,27 +19,25 @@
     <table>
         <thead>
             <tr>
-                <th class="text-center">No</th>
                 <th>Nama Peserta</th>
-                <th>NIM</th>
+                <th>Jurusan</th>
+                <th>Universitas</th>
                 <th>Waktu Absen</th>
-                <th>Pendamping</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($absensis as $absensi)
                 <tr>
-                    <td class="text-center">{{ $loop->iteration }}</td>
                     <td>{{ $absensi->nama_peserta }}</td>
-                    <td>{{ $absensi->nim ?? '-' }}</td>
+                    <td>{{ $absensi->jurusan ?? '-' }}</td>
+                    <td>{{ $absensi->universitas ?? '-' }}</td>
                     <td>{{ $absensi->tanggal_waktu }}</td>
-                    <td>{{ $absensi->nama_pendamping ?? '-' }}</td>
                     <td>{{ $absensi->status_absen }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="text-center">Tidak ada data absensi.</td>
+                    <td colspan="5" class="text-center">Tidak ada data absensi.</td>
                 </tr>
             @endforelse
         </tbody>

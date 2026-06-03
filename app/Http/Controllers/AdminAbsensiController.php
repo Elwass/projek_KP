@@ -15,7 +15,6 @@ class AdminAbsensiController extends Controller
         $pesertas = $this->queryPesertaSesuaiRole()->get(array(
             'users.id AS id',
             'users.name AS name',
-            'pendaftars.nim AS nim',
         ));
 
         return view('admin.absensi.index', [
@@ -85,8 +84,8 @@ class AdminAbsensiController extends Controller
             ->get(array(
                 'absensi.*',
                 'users.name AS nama_peserta',
-                'pendaftars.nim AS nim',
-                'pendamping.name AS nama_pendamping',
+                'pendaftars.jurusan AS jurusan',
+                'pendaftars.universitas AS universitas',
             ));
     }
 
@@ -126,21 +125,19 @@ class AdminAbsensiController extends Controller
     private function barisExport($absensis)
     {
         $rows = [[
-            'No',
             'Nama Peserta',
-            'NIM',
+            'Jurusan',
+            'Universitas',
             'Waktu Absen',
-            'Pendamping',
             'Status',
         ]];
 
-        foreach ($absensis as $index => $absensi) {
+        foreach ($absensis as $absensi) {
             $rows[] = [
-                $index + 1,
                 $absensi->nama_peserta,
-                $absensi->nim ?: '-',
+                $absensi->jurusan ?: '-',
+                $absensi->universitas ?: '-',
                 $absensi->tanggal_waktu,
-                $absensi->nama_pendamping ?: '-',
                 $absensi->status_absen,
             ];
         }

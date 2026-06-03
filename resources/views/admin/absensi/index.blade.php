@@ -37,7 +37,7 @@
                             <select class="custom-select" id="user_id" name="user_id">
                                 <option value="">Semua peserta</option>
                                 @foreach ($pesertas as $peserta)
-                                    <option value="{{ $peserta->id }}" {{ request('user_id') == $peserta->id ? 'selected' : '' }}>{{ $peserta->name }}{{ $peserta->nim ? ' - '.$peserta->nim : '' }}</option>
+                                    <option value="{{ $peserta->id }}" {{ request('user_id') == $peserta->id ? 'selected' : '' }}>{{ $peserta->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -56,15 +56,14 @@
                 </a>
             </div>
             <table id="tabel-absensi" class="table table-bordered table-hover">
-                <thead><tr><th>No</th><th>Peserta</th><th>NIM</th><th>Waktu</th><th>Pendamping</th><th>Status</th><th class="text-center">Aksi</th></tr></thead>
+                <thead><tr><th>Nama Peserta</th><th>Jurusan</th><th>Universitas</th><th>Waktu</th><th>Status</th><th class="text-center">Aksi</th></tr></thead>
                 <tbody>
                     @foreach ($absensis as $absensi)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $absensi->nama_peserta }}</td>
-                            <td>{{ $absensi->nim ?? '-' }}</td>
+                            <td>{{ $absensi->jurusan ?? '-' }}</td>
+                            <td>{{ $absensi->universitas ?? '-' }}</td>
                             <td>{{ $absensi->tanggal_waktu }}</td>
-                            <td>{{ $absensi->nama_pendamping ?? '-' }}</td>
                             <td class="text-center">@include('absensi.status', ['status' => $absensi->status_absen])</td>
                             <td class="text-center"><a href="{{ route('admin.absensi.detail', $absensi->id) }}" class="btn btn-sm btn-warning" aria-label="detail"><i class="fas fa-eye"></i></a></td>
                         </tr>
