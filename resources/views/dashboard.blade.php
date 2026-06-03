@@ -51,43 +51,80 @@
             margin: 0 auto;
         }
 
+        .nav-container {
+            width: 100%;
+        }
+
         .site-navbar {
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
             z-index: 50;
-            border-bottom: 1px solid rgba(185, 28, 28, 0.28);
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(14px);
-            transition: box-shadow 0.25s ease;
+            width: 100%;
+            border-bottom: 1px solid var(--primary);
+            background: var(--white);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .site-navbar.is-hidden {
+            transform: translateY(-100%);
         }
 
         .site-navbar.is-scrolled {
-            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
         }
 
         .nav-inner {
-            min-height: 88px;
+            min-height: 84px;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 24px;
+            padding: 12px 40px;
+        }
+
+        @media (min-width: 768px) {
+            .nav-inner {
+                min-height: 92px;
+                padding-top: 16px;
+                padding-bottom: 16px;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .nav-inner {
+                padding-left: 64px;
+                padding-right: 64px;
+            }
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 14px;
-            min-width: 240px;
+            gap: 12px;
+            min-width: 270px;
         }
 
         .brand img {
-            width: 54px;
-            height: 54px;
+            width: auto;
+            height: 48px;
             object-fit: contain;
+        }
+
+        @media (min-width: 768px) {
+            .brand {
+                gap: 16px;
+            }
+
+            .brand img {
+                height: 56px;
+            }
         }
 
         .brand-title {
             margin: 0;
+            color: #0f172a;
             font-size: 16px;
             line-height: 1.2;
             font-weight: 800;
@@ -103,47 +140,118 @@
             display: flex;
             align-self: stretch;
             align-items: stretch;
-            gap: 6px;
+            gap: 4px;
         }
 
-        .nav-link {
+        .nav-link,
+        .dropdown-trigger {
             position: relative;
+            height: 100%;
             display: flex;
             align-items: center;
-            padding: 0 10px;
-            color: #374151;
+            gap: 4px;
+            border: 0;
+            background: transparent;
+            padding: 0 12px;
+            color: #1f2937;
+            font: inherit;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 800;
+            cursor: pointer;
             transition: color 0.2s ease;
         }
 
-        .nav-link::after {
+        .nav-link::after,
+        .dropdown-trigger::after {
             content: '';
             position: absolute;
-            left: 10px;
-            right: 10px;
+            left: 0;
             bottom: 0;
+            width: 0;
             height: 2px;
-            transform: scaleX(0);
-            transform-origin: left;
             background: var(--primary);
-            transition: transform 0.2s ease;
+            transition: width 0.2s ease;
         }
 
         .nav-link:hover,
-        .nav-link:focus {
-            color: var(--primary);
+        .nav-link:focus,
+        .dropdown-item:hover .dropdown-trigger,
+        .dropdown-item:focus-within .dropdown-trigger {
+            color: var(--primary-dark);
         }
 
         .nav-link:hover::after,
-        .nav-link:focus::after {
-            transform: scaleX(1);
+        .nav-link:focus::after,
+        .dropdown-item:hover .dropdown-trigger::after,
+        .dropdown-item:focus-within .dropdown-trigger::after {
+            width: 100%;
+        }
+
+        .dropdown-item {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .chevron {
+            font-size: 16px;
+            line-height: 1;
+            transition: transform 0.2s ease;
+        }
+
+        .dropdown-item:hover .chevron,
+        .dropdown-item:focus-within .chevron {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 50;
+            min-width: 208px;
+            padding: 8px;
+            background: var(--white);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.15);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-4px);
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+
+        .dropdown-item:hover .dropdown-menu,
+        .dropdown-item:focus-within .dropdown-menu {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a,
+        .dropdown-menu button {
+            display: block;
+            width: 100%;
+            border: 0;
+            background: transparent;
+            padding: 8px 12px;
+            color: #1f2937;
+            font: inherit;
+            font-size: 14px;
+            text-align: left;
+            transition: color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .dropdown-menu a:hover,
+        .dropdown-menu button:hover {
+            color: var(--primary);
         }
 
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            color: #334155;
         }
 
         .icon-button,
@@ -151,19 +259,30 @@
             width: 40px;
             height: 40px;
             border: 0;
-            border-radius: 999px;
             background: transparent;
-            color: #475569;
+            color: #334155;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            padding: 8px;
+            transition: color 0.2s ease;
         }
 
         .icon-button:hover,
         .mobile-toggle:hover {
-            color: var(--primary);
-            background: var(--primary-soft);
+            color: var(--primary-dark);
+        }
+
+        .icon-button svg,
+        .mobile-toggle svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .mobile-toggle {
@@ -173,24 +292,44 @@
         .mobile-menu {
             display: none;
             border-top: 1px solid var(--line);
-            padding: 12px 0 18px;
+            background: var(--white);
+            padding: 12px 16px 18px;
         }
 
+        .mobile-menu-group {
+            padding: 8px 0;
+        }
+
+        .mobile-menu p,
         .mobile-menu a {
             display: block;
-            padding: 12px 0;
-            color: #374151;
+            margin: 0;
+            padding: 4px 0;
+            color: #1f2937;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 800;
+        }
+
+        .mobile-menu .mobile-sub-link {
+            padding-left: 12px;
+            color: #4b5563;
+            font-weight: 500;
         }
 
         .hero {
-            min-height: calc(100vh - 88px);
+            min-height: calc(100vh - 96px);
+            margin-top: 84px;
             position: relative;
             overflow: hidden;
             background:
                 linear-gradient(90deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.7)),
                 url('{{ asset('assets/img/profil.jpg') }}') center/cover no-repeat;
+        }
+
+        @media (min-width: 768px) {
+            .hero {
+                margin-top: 92px;
+            }
         }
 
         .hero::after {
@@ -205,7 +344,7 @@
         }
 
         .hero-inner {
-            min-height: calc(100vh - 88px);
+            min-height: calc(100vh - 96px);
             position: relative;
             z-index: 1;
             display: flex;
@@ -577,6 +716,11 @@
                 display: none;
             }
 
+            .nav-inner {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
             .mobile-toggle {
                 display: inline-flex;
             }
@@ -616,6 +760,10 @@
                 min-width: 0;
             }
 
+            .brand img {
+                height: 48px;
+            }
+
             .brand-title {
                 font-size: 14px;
             }
@@ -653,7 +801,7 @@
 </head>
 <body>
     <header class="site-navbar" id="siteNavbar">
-        <div class="container nav-inner">
+        <div class="nav-container nav-inner">
             <a href="#beranda" class="brand" aria-label="DPRD Kabupaten Banyumas">
                 <img src="{{ asset('assets/img/logo.png') }}" alt="Logo DPRD Kabupaten Banyumas">
                 <div>
@@ -662,31 +810,87 @@
                 </div>
             </a>
 
+            @php
+                $menuItems = [
+                    ['label' => 'Beranda', 'href' => '#beranda'],
+                    ['label' => 'Tentang', 'children' => [
+                        ['label' => 'Profil Magang', 'href' => '#profil-magang'],
+                        ['label' => 'Alur Magang', 'href' => '#alur-magang'],
+                        ['label' => 'Syarat & Ketentuan', 'href' => '#syarat-ketentuan'],
+                    ]],
+                    ['label' => 'Kegiatan', 'children' => [
+                        ['label' => 'Absensi', 'href' => route('login.index')],
+                        ['label' => 'Logbook', 'href' => route('login.index')],
+                        ['label' => 'Tugas', 'href' => route('login.index')],
+                    ]],
+                    ['label' => 'Dashboard', 'href' => route('login.index')],
+                    ['label' => 'Penilaian', 'children' => [
+                        ['label' => 'Evaluasi', 'href' => route('login.index')],
+                        ['label' => 'Feedback', 'href' => route('login.index')],
+                    ]],
+                    ['label' => 'Dokumen', 'children' => [
+                        ['label' => 'Template', 'href' => route('login.index')],
+                        ['label' => 'Upload', 'href' => route('login.index')],
+                    ]],
+                    ['label' => 'AI Assistant', 'children' => [
+                        ['label' => 'Ringkasan', 'href' => route('login.index')],
+                        ['label' => 'Laporan Otomatis', 'href' => route('login.index')],
+                    ]],
+                    ['label' => 'Informasi', 'children' => [
+                        ['label' => 'Pengumuman', 'href' => '#profil-magang'],
+                        ['label' => 'FAQ', 'href' => '#faq'],
+                        ['label' => 'Kontak', 'href' => '#kontak-bantuan'],
+                    ]],
+                ];
+            @endphp
+
             <nav class="nav-links" aria-label="Navigasi utama">
-                <a class="nav-link" href="#beranda">Beranda</a>
-                <a class="nav-link" href="#profil-magang">Profil Magang</a>
-                <a class="nav-link" href="#alur-magang">Alur Magang</a>
-                <a class="nav-link" href="#syarat-ketentuan">Syarat</a>
-                <a class="nav-link" href="#faq">FAQ</a>
-                <a class="nav-link" href="#kontak-bantuan">Kontak</a>
-                <a class="nav-link" href="{{ route('login.index') }}">Dashboard</a>
+                @foreach ($menuItems as $item)
+                    @if (isset($item['href']))
+                        <a class="nav-link" href="{{ $item['href'] }}">{{ $item['label'] }}</a>
+                    @else
+                        <div class="dropdown-item">
+                            <button type="button" class="dropdown-trigger">
+                                {{ $item['label'] }}
+                                <span class="chevron" aria-hidden="true">⌄</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                @foreach ($item['children'] as $child)
+                                    <a href="{{ $child['href'] }}">{{ $child['label'] }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
             </nav>
 
             <div class="nav-actions" aria-hidden="true">
-                <button type="button" class="icon-button" title="Bahasa">⌾</button>
-                <button type="button" class="icon-button" title="Cari">⌕</button>
+                <button type="button" class="icon-button" title="Bahasa">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 0 20"></path><path d="M12 2a15.3 15.3 0 0 0 0 20"></path></svg>
+                </button>
+                <button type="button" class="icon-button" title="Cari">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+                </button>
             </div>
 
-            <button type="button" class="mobile-toggle" id="mobileToggle" aria-controls="mobileMenu" aria-expanded="false">☰</button>
+            <button type="button" class="mobile-toggle" id="mobileToggle" aria-controls="mobileMenu" aria-expanded="false" aria-label="Buka menu">
+                <svg class="menu-icon" viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M3 6h18"></path><path d="M3 18h18"></path></svg>
+                <svg class="close-icon" viewBox="0 0 24 24" style="display:none"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+            </button>
         </div>
         <div class="container mobile-menu" id="mobileMenu">
-            <a href="#beranda">Beranda</a>
-            <a href="#profil-magang">Profil Magang</a>
-            <a href="#alur-magang">Alur Magang</a>
-            <a href="#syarat-ketentuan">Syarat</a>
-            <a href="#faq">FAQ</a>
-            <a href="#kontak-bantuan">Kontak</a>
-            <a href="{{ route('login.index') }}">Dashboard</a>
+            @foreach ($menuItems as $item)
+                <div class="mobile-menu-group">
+                    @if (isset($item['href']))
+                        <a href="{{ $item['href'] }}">{{ $item['label'] }}</a>
+                    @else
+                        <p>{{ $item['label'] }}</p>
+                        @foreach ($item['children'] as $child)
+                            <a href="{{ $child['href'] }}" class="mobile-sub-link">{{ $child['label'] }}</a>
+                        @endforeach
+                    @endif
+                </div>
+            @endforeach
         </div>
     </header>
 
@@ -929,7 +1133,18 @@
             const timelineProgress = document.getElementById('timelineProgress');
 
             function updateNavbar() {
-                navbar.classList.toggle('is-scrolled', window.scrollY > 10);
+                const scrollY = window.scrollY;
+                const showThreshold = window.innerHeight * 0.45;
+
+                if (scrollY <= 20) {
+                    navbar.classList.remove('is-hidden', 'is-scrolled');
+                } else if (scrollY > showThreshold) {
+                    navbar.classList.remove('is-hidden');
+                    navbar.classList.add('is-scrolled');
+                } else {
+                    navbar.classList.add('is-hidden');
+                    navbar.classList.remove('is-scrolled');
+                }
             }
 
             function updateTimeline() {
@@ -948,14 +1163,16 @@
             mobileToggle.addEventListener('click', function () {
                 const isOpen = mobileMenu.classList.toggle('is-open');
                 mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-                mobileToggle.textContent = isOpen ? '×' : '☰';
+                mobileToggle.querySelector('.menu-icon').style.display = isOpen ? 'none' : 'block';
+                mobileToggle.querySelector('.close-icon').style.display = isOpen ? 'block' : 'none';
             });
 
             mobileMenu.querySelectorAll('a').forEach(function (link) {
                 link.addEventListener('click', function () {
                     mobileMenu.classList.remove('is-open');
                     mobileToggle.setAttribute('aria-expanded', 'false');
-                    mobileToggle.textContent = '☰';
+                    mobileToggle.querySelector('.menu-icon').style.display = 'block';
+                    mobileToggle.querySelector('.close-icon').style.display = 'none';
                 });
             });
 
