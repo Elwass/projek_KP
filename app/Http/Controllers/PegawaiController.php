@@ -8,6 +8,7 @@ use App\Models\Peserta;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class PegawaiController extends Controller
 {
@@ -47,7 +48,7 @@ class PegawaiController extends Controller
             ]);
 
             $validatedData['password'] = Hash::make($validatedData['password']);
-            $validatedData['foto'] = $request->file('foto')->store('foto');
+            $validatedData['foto'] = $request->file('foto')->store('foto', 'public');
 
             User::create($validatedData);
 
@@ -86,8 +87,9 @@ class PegawaiController extends Controller
             ]);
 
             if ($request->file('foto')) {
-                File::delete(public_path('storage').'/'.$pegawai->foto);
-                $validatedData['foto'] = $request->file('foto')->store('foto');
+                Storage::disk('public')->delete($pegawai->foto);
+                Storage::delete($pegawai->foto);
+                $validatedData['foto'] = $request->file('foto')->store('foto', 'public');
             }else {
                 $validatedData['foto'] = $pegawai->foto;
             }

@@ -31,12 +31,14 @@
 @section('main-content')
     <div class="card card-primary card-outline">
         <div class="card-body">
-            <h3>Selamat datang {{ auth()->user()->name }}</h3>
+            <h3>Selamat datang {{ $namaPeserta }}</h3>
             <p class="card-title">
             Silahkan isi data pada form berikut untuk melakukan pendaftaran Praktik Kerja Lapangan (PKL)
             </p>
         </div>
     </div>
+    @include('peserta.partials.pendamping', ['pendamping' => $pendamping])
+
     <div class="card">
         <div class="card-body">
             <form action="{{ route('peserta.daftar') }}" method="POST" enctype="multipart/form-data">
@@ -46,7 +48,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama</label>
-                            <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama') }}">
+                            <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama', $namaPeserta) }}">
                             @error('nama')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -58,7 +60,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ auth()->user()->email }}" readonly>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $user->email) }}" readonly>
                             @error('email')
                                 <div class="invalid-feedback">
                                     {{ $message }}
