@@ -30,7 +30,22 @@ class PendaftaranController extends Controller
     {
         $pendaftar = User::join('pendaftars', 'users.id', '=', 'pendaftars.id_user')
             ->where('pendaftars.id', $id)
-            ->first();
+            ->first([
+                'pendaftars.*',
+                'pendaftars.id AS id',
+                'users.id AS user_id',
+                'users.name',
+                'users.email',
+                'users.tempat_lahir',
+                'users.tgl_lahir',
+                'users.alamat',
+                'users.jk',
+                'users.agama',
+                'users.no_ktp',
+                'users.no_telp',
+                'users.foto',
+                'users.updated_at AS user_updated_at',
+            ]);
 
         return view('admin.pendaftaran.detail', [
             'title' => 'Detail Data Pendaftaran Peserta',
@@ -43,7 +58,22 @@ class PendaftaranController extends Controller
     {   
         $pendaftar = User::join('pendaftars', 'users.id', '=', 'pendaftars.id_user')
             ->where('pendaftars.id', $id)
-            ->first();
+            ->first([
+                'pendaftars.*',
+                'pendaftars.id AS id',
+                'users.id AS user_id',
+                'users.name',
+                'users.email',
+                'users.tempat_lahir',
+                'users.tgl_lahir',
+                'users.alamat',
+                'users.jk',
+                'users.agama',
+                'users.no_ktp',
+                'users.no_telp',
+                'users.foto',
+                'users.updated_at AS user_updated_at',
+            ]);
         
         $pendampings = User::where('role','pendamping')->get();
         $instansis = Instansi::all();
