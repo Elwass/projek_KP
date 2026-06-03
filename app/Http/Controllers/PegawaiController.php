@@ -43,7 +43,7 @@ class PegawaiController extends Controller
                 'no_ktp' => 'required|max:255',
                 'no_telp' => 'required|max:255',
                 'role' => 'required|max:255',
-                'foto' => 'required|image|file|max:1024',
+                'foto' => 'required|image|mimes:jpg,png,jpeg|max:1024',
             ]);
 
             $validatedData['password'] = Hash::make($validatedData['password']);
@@ -82,20 +82,21 @@ class PegawaiController extends Controller
                 'no_ktp' => 'required|max:255',
                 'no_telp' => 'required|max:255',
                 'role' => 'required|max:255',
-                'foto' => 'image|file|max:1024',
+                'foto' => 'image|mimes:jpg,png,jpeg|max:1024',
             ]);
 
+            $fotoLama = $pegawai->foto;
             if ($request->hasFile('foto')) {
-                if ($pegawai->foto) {
-                    Storage::disk('public')->delete($pegawai->foto);
-                }
-
                 $validatedData['foto'] = $request->file('foto')->store('foto', 'public');
             } else {
-                $validatedData['foto'] = $pegawai->foto;
+                $validatedData['foto'] = $fotoLama;
             }
             
             User::where('id', $id)->update($validatedData);
+
+            if ($request->hasFile('foto') && $fotoLama && Storage::disk('public')->exists($fotoLama)) {
+                Storage::disk('public')->delete($fotoLama);
+            }
 
             History::create([
                 'user' => auth()->user()->name,

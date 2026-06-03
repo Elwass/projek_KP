@@ -77,14 +77,11 @@ class DataPesertaController extends Controller
                 'foto' => 'image|mimes:jpg,png,jpeg|max:1024',
             ]);
 
+            $fotoLama = $peserta->foto;
             if ($request->hasFile('foto')) {
-                if ($peserta->foto && Storage::disk('public')->exists($peserta->foto)) {
-                    Storage::disk('public')->delete($peserta->foto);
-                }
-
                 $validatedData['foto'] = $request->file('foto')->store('mahasiswa', 'public');
             } else {
-                $validatedData['foto'] = $peserta->foto;
+                $validatedData['foto'] = $fotoLama;
             }
     
             if ($request->file('cv')) {
@@ -146,6 +143,10 @@ class DataPesertaController extends Controller
                     'id_instansi' => $request['instansi'],
                     'status' => $status,
                 ]);
+
+            if ($request->hasFile('foto') && $fotoLama && Storage::disk('public')->exists($fotoLama)) {
+                Storage::disk('public')->delete($fotoLama);
+            }
 
             History::create([
                 'user' => auth()->user()->name,

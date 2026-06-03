@@ -170,15 +170,11 @@ class PesertaController extends Controller
             'foto' => 'image|mimes:jpg,png,jpeg|max:1024',
         ]);
 
+        $fotoLama = auth()->user()->foto;
         if ($request->hasFile('foto')) {
-            $fotoLama = auth()->user()->foto;
-            if ($fotoLama && Storage::disk('public')->exists($fotoLama)) {
-                Storage::disk('public')->delete($fotoLama);
-            }
-
             $validatedData['foto'] = $request->file('foto')->store('mahasiswa', 'public');
         } else {
-            $validatedData['foto'] = auth()->user()->foto;
+            $validatedData['foto'] = $fotoLama;
         }
 
         if ($request->file('cv')) {
@@ -221,6 +217,10 @@ class PesertaController extends Controller
                 'tgl_selesai' => $validatedData['tgl_selesai'],
                 'status' => 'daftar',
             ]);
+
+        if ($request->hasFile('foto') && $fotoLama && Storage::disk('public')->exists($fotoLama)) {
+            Storage::disk('public')->delete($fotoLama);
+        }
     }
     
 
