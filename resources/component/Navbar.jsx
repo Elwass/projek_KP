@@ -80,7 +80,7 @@ export default function Navbar() {
       <div className="flex min-h-[84px] w-full items-center justify-between px-10 py-3 xl:px-16 md:min-h-[92px] md:py-4">
         <div className="flex items-center gap-3 md:gap-4">
           <img
-            src="/images/dprd-logo.webp"
+            src="/assets/img/dprd-logo.webp"
             alt="Logo DPRD Kab. Banyumas"
             className="h-12 w-auto object-contain md:h-14"
           />
