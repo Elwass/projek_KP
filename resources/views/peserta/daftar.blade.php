@@ -268,7 +268,7 @@
                                         {{ $message }}
                                     </div>                     
                                 @enderror
-                                <small class="form-text text-muted">Format JPG, JPEG, PNG, atau WEBP. Ukuran maksimal 5 MB.</small>
+                                <small class="form-text text-muted">Format JPG, JPEG, PNG, atau WEBP. Ukuran maksimal 15 MB.</small>
                             </div>
                           </div>
                     </div>

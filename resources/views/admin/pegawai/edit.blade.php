@@ -189,7 +189,7 @@
                                         {{ $message }}
                                     </div>
                                 @else
-                                    <small class="form-text text-muted">upload file JPG, JPEG, PNG, atau WEBP maksimal 5 MB jika ingin mengubah file sebelumnya</small>
+                                    <small class="form-text text-muted">upload file JPG, JPEG, PNG, atau WEBP maksimal 15 MB jika ingin mengubah file sebelumnya</small>
                                 @enderror
                             </div>
                           </div>
