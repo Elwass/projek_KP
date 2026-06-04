@@ -4,7 +4,7 @@ export default function FooterSection() {
       <div className="mx-auto max-w-6xl px-4 py-12 md:py-14">
         <div>
           <div className="flex items-center gap-3">
-            <img src="/images/dprd-logo.webp" alt="Logo DPRD Kab. Banyumas" className="h-12 w-auto object-contain" />
+            <img src="/assets/img/dprd-logo.webp" alt="Logo DPRD Kab. Banyumas" className="h-12 w-auto object-contain" />
             <h3 className="text-lg font-semibold text-gray-900">DPRD Kabupaten Banyumas</h3>
           </div>
           <p className="mt-4 max-w-[320px] text-sm leading-7 text-gray-600">
