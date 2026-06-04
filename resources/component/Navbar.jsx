@@ -25,6 +25,63 @@ const searchableSections = [
   { keywords: ['kontak', 'bantuan', 'email', 'whatsapp', 'alamat'], target: '#kontak-bantuan' },
 ]
 
+const englishTranslations = {
+  'Sistem Informasi Magang Berdampak': 'Impactful Internship Information System',
+  'DPRD Kabupaten Banyumas': 'Banyumas Regency Regional House of Representatives',
+  'Bahasa Indonesia': 'Indonesian',
+  Beranda: 'Home',
+  Tentang: 'About',
+  'Profil Magang': 'Internship Profile',
+  'Alur Magang': 'Internship Flow',
+  'Syarat & Ketentuan': 'Terms & Conditions',
+  Kegiatan: 'Activities',
+  Absensi: 'Attendance',
+  Tugas: 'Tasks',
+  Penilaian: 'Assessment',
+  Evaluasi: 'Evaluation',
+  Dokumen: 'Documents',
+  Ringkasan: 'Summary',
+  'Laporan Otomatis': 'Automated Reports',
+  Informasi: 'Information',
+  Pengumuman: 'Announcements',
+  Kontak: 'Contact',
+  'Kontak & Bantuan': 'Contact & Help',
+  Pendaftaran: 'Registration',
+}
+
+const translationOriginals = new WeakMap()
+
+function applyDocumentLanguage(language) {
+  document.documentElement.setAttribute('lang', language)
+  document.title = language === 'en' ? 'Impactful Internship Information System' : 'Sistem Informasi Magang Berdampak'
+
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT
+      if (node.parentElement && ['SCRIPT', 'STYLE', 'TEXTAREA'].includes(node.parentElement.tagName)) {
+        return NodeFilter.FILTER_REJECT
+      }
+      return NodeFilter.FILTER_ACCEPT
+    },
+  })
+
+  const nodes = []
+  while (walker.nextNode()) nodes.push(walker.currentNode)
+
+  nodes.forEach((node) => {
+    if (!translationOriginals.has(node)) translationOriginals.set(node, node.nodeValue)
+
+    const original = translationOriginals.get(node)
+    const trimmedOriginal = original.trim()
+    const leading = original.match(/^\s*/)[0]
+    const trailing = original.match(/\s*$/)[0]
+
+    node.nodeValue = language === 'en' && englishTranslations[trimmedOriginal]
+      ? `${leading}${englishTranslations[trimmedOriginal]}${trailing}`
+      : original
+  })
+}
+
 function DropdownItem({ item }) {
   return (
     <div className="relative group h-full flex items-center">
@@ -84,8 +141,9 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const openEnglishTranslation = () => {
-    window.location.href = `https://translate.google.com/translate?sl=id&tl=en&u=${encodeURIComponent(window.location.href)}`
+  const handleLanguageChange = (language) => {
+    applyDocumentLanguage(language)
+    setLanguageOpen(false)
   }
 
   const scrollToTarget = (target) => {
@@ -179,10 +237,10 @@ export default function Navbar() {
           </button>
           {languageOpen && (
             <div id="language-menu" className="absolute right-0 top-full z-50 mt-3 w-44 rounded-md border border-gray-200 bg-white p-2 text-sm shadow-lg">
-              <button type="button" className="block w-full rounded px-3 py-2 text-left font-semibold text-red-700 hover:bg-red-50" onClick={() => setLanguageOpen(false)}>
+              <button type="button" className="block w-full rounded px-3 py-2 text-left font-semibold text-red-700 hover:bg-red-50" onClick={() => handleLanguageChange('id')}>
                 Bahasa Indonesia
               </button>
-              <button type="button" className="block w-full rounded px-3 py-2 text-left text-gray-700 hover:bg-red-50 hover:text-red-700" onClick={openEnglishTranslation}>
+              <button type="button" className="block w-full rounded px-3 py-2 text-left text-gray-700 hover:bg-red-50 hover:text-red-700" onClick={() => handleLanguageChange('en')}>
                 English
               </button>
             </div>

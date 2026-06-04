@@ -534,6 +534,109 @@
                 { keywords: ['faq', 'pertanyaan', 'status', 'seleksi'], target: '#faq' },
                 { keywords: ['kontak', 'bantuan', 'email', 'whatsapp', 'alamat'], target: '#kontak-bantuan' },
             ];
+            const englishTranslations = {
+                'Sistem Informasi Magang Berdampak': 'Impactful Internship Information System',
+                'Bahasa Indonesia': 'Indonesian',
+                'Cari informasi magang': 'Search internship information',
+                'Cari': 'Search',
+                'Masukkan kata kunci lalu tekan Cari.': 'Enter a keyword, then press Search.',
+                'DPRD Kabupaten Banyumas': 'Banyumas Regency Regional House of Representatives',
+                'Beranda': 'Home',
+                'Tentang': 'About',
+                'Profil Magang': 'Internship Profile',
+                'Alur Magang': 'Internship Flow',
+                'Syarat & Ketentuan': 'Terms & Conditions',
+                'Kegiatan': 'Activities',
+                'Absensi': 'Attendance',
+                'Logbook': 'Logbook',
+                'Tugas': 'Tasks',
+                'Dashboard': 'Dashboard',
+                'Penilaian': 'Assessment',
+                'Evaluasi': 'Evaluation',
+                'Feedback': 'Feedback',
+                'Dokumen': 'Documents',
+                'Template': 'Templates',
+                'Upload': 'Upload',
+                'AI Assistant': 'AI Assistant',
+                'Ringkasan': 'Summary',
+                'Laporan Otomatis': 'Automated Reports',
+                'Informasi': 'Information',
+                'Pengumuman': 'Announcements',
+                'FAQ': 'FAQ',
+                'Kontak': 'Contact',
+                'Masuk Sistem': 'Sign In',
+                'Daftar Magang': 'Register for Internship',
+                'Profil Program Magang': 'Internship Program Profile',
+                'Program magang DPRD Banyumas memberikan kesempatan bagi mahasiswa untuk terlibat langsung dalam lingkungan kerja pemerintahan serta mengembangkan kemampuan teknis (hard skills) dan keterampilan profesional (soft skills) secara terstruktur melalui pendampingan mentor, pencatatan logbook harian, serta evaluasi berkala agar proses pembelajaran berjalan optimal dan sesuai kebutuhan instansi.': 'The Banyumas DPRD internship program gives students the opportunity to engage directly in a government work environment while developing technical skills and professional soft skills through structured mentor guidance, daily logbook recording, and periodic evaluation so the learning process runs optimally and aligns with institutional needs.',
+                'Skema Magang': 'Internship Scheme',
+                'Kegiatan berbasis logbook harian': 'Daily logbook-based activities',
+                'Pendampingan oleh mentor instansi': 'Guidance from institutional mentors',
+                'Evaluasi berkala selama program': 'Periodic evaluation during the program',
+                'Terintegrasi dengan aktivitas kerja instansi': 'Integrated with institutional work activities',
+                'Durasi & Pelaksanaan': 'Duration & Implementation',
+                'Durasi menyesuaikan kebijakan kampus dan instansi asal mahasiswa': 'Duration follows campus and host institution policies',
+                'Waktu/jam kegiatan mengikuti operasional instansi': 'Activity hours follow institutional operations',
+                'Berbasis aktivitas kerja nyata di lingkungan instansi': 'Based on real work activities in the institution',
+                'Bidang Kegiatan': 'Activity Fields',
+                'Administrasi pemerintahan': 'Government administration',
+                'Sistem informasi dan teknologi': 'Information systems and technology',
+                'Pengelolaan data dan dokumentasi': 'Data and documentation management',
+                'Hukum dan kebijakan publik': 'Law and public policy',
+                'Keuangan dan pengelolaan anggaran': 'Finance and budget management',
+                'Pelayanan publik': 'Public services',
+                'Output Program': 'Program Outputs',
+                'Laporan kegiatan magang': 'Internship activity report',
+                'Penilaian kinerja dari mentor': 'Performance assessment from mentors',
+                'Rekap logbook harian': 'Daily logbook recap',
+                'Pengalaman kerja profesional': 'Professional work experience',
+                'Proses pelaksanaan magang di DPRD Banyumas secara sistematis dan terstruktur': 'A systematic and structured internship process at Banyumas DPRD',
+                'Pendaftaran': 'Registration',
+                'Mengisi form pendaftaran online': 'Complete the online registration form',
+                'Upload berkas (CV, surat pengantar, dll)': 'Upload files (CV, cover letter, etc.)',
+                'Verifikasi': 'Verification',
+                'Seleksi administrasi oleh instansi': 'Administrative selection by the institution',
+                'Penyesuaian bidang magang': 'Internship field matching',
+                'Pelaksanaan': 'Implementation',
+                'Kegiatan magang di instansi': 'Internship activities at the institution',
+                'Pengisian logbook harian': 'Daily logbook completion',
+                'Pendampingan mentor': 'Mentor guidance',
+                'Penyusunan laporan akhir': 'Final report preparation',
+                'Sertifikat magang': 'Internship certificate',
+                'Syarat & Ketentuan': 'Terms & Conditions',
+                'Persyaratan Peserta': 'Participant Requirements',
+                'Mahasiswa aktif dari perguruan tinggi': 'Active university student',
+                'Memiliki surat pengantar dari kampus': 'Has an introduction letter from campus',
+                'Bersedia mengikuti seluruh rangkaian kegiatan magang': 'Willing to follow all internship activities',
+                'Memiliki minat di bidang pemerintahan dan pelayanan publik': 'Interested in government and public service',
+                'Ketentuan Umum': 'General Terms',
+                'Durasi magang menyesuaikan kebijakan kampus dan instansi': 'Internship duration follows campus and institution policies',
+                'Jam kegiatan mengikuti operasional instansi': 'Activity hours follow institutional operations',
+                'Peserta wajib menjaga etika dan kedisiplinan': 'Participants must maintain ethics and discipline',
+                'Wajib mengikuti arahan mentor dan pembimbing': 'Must follow mentor and supervisor directions',
+                'Berkas yang Diperlukan': 'Required Documents',
+                'Surat pengantar dari kampus': 'Introduction letter from campus',
+                'Transkrip nilai (opsional)': 'Transcript (optional)',
+                'Dokumen pendukung lainnya (jika diperlukan)': 'Other supporting documents (if required)',
+                'FAQ Magang Berdampak': 'Impactful Internship FAQ',
+                'Siapa saja yang dapat mendaftar program magang ini?': 'Who can register for this internship program?',
+                'Program ini terbuka bagi mahasiswa aktif yang memenuhi persyaratan administrasi dari kampus dan ketentuan instansi DPRD Banyumas.': 'This program is open to active students who meet campus administrative requirements and Banyumas DPRD institutional requirements.',
+                'Bagaimana alur pendaftaran magang dilakukan?': 'How does the internship registration flow work?',
+                'Pendaftaran dilakukan secara online melalui sistem, dimulai dari registrasi akun, melengkapi data diri, mengunggah berkas, hingga menunggu proses verifikasi.': 'Registration is completed online through the system, starting from account registration, completing personal data, uploading documents, and waiting for verification.',
+                'Dokumen apa saja yang perlu disiapkan?': 'What documents need to be prepared?',
+                'Dokumen umum yang biasanya dibutuhkan meliputi surat pengantar kampus, CV, transkrip nilai, dan dokumen pendukung lain sesuai ketentuan periode magang.': 'Common documents usually include a campus introduction letter, CV, transcript, and other supporting documents according to the internship period requirements.',
+                'Bagaimana cara memantau status seleksi?': 'How can I monitor selection status?',
+                'Status pendaftaran dapat dipantau langsung melalui dashboard akun pada Sistem Informasi Magang setelah proses pengajuan selesai.': 'Registration status can be monitored directly through the account dashboard after the submission process is complete.',
+                'Kontak & Bantuan': 'Contact & Help',
+                'Jika membutuhkan bantuan terkait pendaftaran atau pelaksanaan magang, silakan hubungi Sekretariat DPRD Kabupaten Banyumas.': 'If you need assistance with registration or internship implementation, please contact the Secretariat of the Banyumas Regency DPRD.',
+                'Email:': 'Email:',
+                'WhatsApp:': 'WhatsApp:',
+                'Alamat': 'Address',
+                'Jl. Kabupaten No.1, Purwokerto, Sokanegara, Kec. Purwokerto Tim., Kabupaten Banyumas, Jawa Tengah 53115': 'Jl. Kabupaten No.1, Purwokerto, Sokanegara, East Purwokerto District, Banyumas Regency, Central Java 53115',
+                'Tautan Cepat': 'Quick Links',
+                'Kebijakan Privasi': 'Privacy Policy',
+                'All rights reserved.': 'All rights reserved.',
+            };
+            const translationOriginals = new WeakMap();
 
             const setMobileOpen = function (isOpen) {
                 mobileButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
@@ -576,6 +679,58 @@
                 if (!languageButton || !languageMenu) return;
                 languageButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
                 languageMenu.classList.toggle('hidden', !isOpen);
+            };
+
+            const translateTextNodes = function (language) {
+                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+                    acceptNode: function (node) {
+                        if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                        if (node.parentElement && ['SCRIPT', 'STYLE', 'TEXTAREA'].includes(node.parentElement.tagName)) {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        return NodeFilter.FILTER_ACCEPT;
+                    },
+                });
+                const nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+
+                nodes.forEach(function (node) {
+                    if (!translationOriginals.has(node)) {
+                        translationOriginals.set(node, node.nodeValue);
+                    }
+
+                    const original = translationOriginals.get(node);
+                    const trimmedOriginal = original.trim();
+                    const leading = original.match(/^\s*/)[0];
+                    const trailing = original.match(/\s*$/)[0];
+
+                    node.nodeValue = language === 'en' && englishTranslations[trimmedOriginal]
+                        ? leading + englishTranslations[trimmedOriginal] + trailing
+                        : original;
+                });
+            };
+
+            const applyLandingLanguage = function (language) {
+                document.documentElement.setAttribute('lang', language);
+                document.title = language === 'en' ? 'Impactful Internship Information System' : 'Sistem Informasi Magang Berdampak';
+                translateTextNodes(language);
+
+                if (searchInput) {
+                    searchInput.placeholder = language === 'en' ? 'Search FAQ, contact, requirements...' : 'Cari FAQ, kontak, syarat...';
+                }
+
+                if (searchStatus) {
+                    searchStatus.textContent = language === 'en'
+                        ? 'Enter a keyword, then press Search.'
+                        : 'Masukkan kata kunci lalu tekan Cari.';
+                }
+
+                languageOptions.forEach(function (option) {
+                    const isActive = option.getAttribute('data-language') === language;
+                    option.classList.toggle('font-semibold', isActive);
+                    option.classList.toggle('text-red-700', isActive);
+                    option.classList.toggle('text-gray-700', !isActive);
+                });
             };
 
             const setSearchOpen = function (isOpen) {
@@ -639,13 +794,7 @@
                 option.addEventListener('click', function () {
                     const selectedLanguage = option.getAttribute('data-language');
                     setLanguageOpen(false);
-
-                    if (selectedLanguage === 'en') {
-                        window.location.href = 'https://translate.google.com/translate?sl=id&tl=en&u=' + encodeURIComponent(window.location.href);
-                        return;
-                    }
-
-                    document.documentElement.setAttribute('lang', 'id');
+                    applyLandingLanguage(selectedLanguage);
                 });
             });
 
