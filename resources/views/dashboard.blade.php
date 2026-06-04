@@ -179,21 +179,33 @@
                 @endforeach
             </nav>
 
-            <div class="hidden items-center gap-2 text-slate-700 lg:flex" aria-hidden="true">
-                <button type="button" class="p-2 transition-colors hover:text-red-700" aria-label="Bahasa">
-                    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="relative hidden items-center gap-2 text-slate-700 lg:flex">
+                <button id="language-menu-button" type="button" class="p-2 transition-colors hover:text-red-700" aria-label="Pilih bahasa" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu">
+                    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="12" cy="12" r="10" />
                         <path d="M2 12h20" />
                         <path d="M12 2a15.3 15.3 0 0 1 0 20" />
                         <path d="M12 2a15.3 15.3 0 0 0 0 20" />
                     </svg>
                 </button>
-                <button type="button" class="p-2 transition-colors hover:text-red-700" aria-label="Cari">
-                    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <div id="language-menu" class="hidden absolute right-0 top-full z-50 mt-3 w-44 rounded-md border border-gray-200 bg-white p-2 text-sm shadow-lg">
+                    <button type="button" class="language-option block w-full rounded px-3 py-2 text-left font-semibold text-red-700 hover:bg-red-50" data-language="id">Bahasa Indonesia</button>
+                    <button type="button" class="language-option block w-full rounded px-3 py-2 text-left text-gray-700 hover:bg-red-50 hover:text-red-700" data-language="en">English</button>
+                </div>
+                <button id="search-toggle-button" type="button" class="p-2 transition-colors hover:text-red-700" aria-label="Buka pencarian" aria-expanded="false" aria-controls="landing-search-form">
+                    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="11" cy="11" r="8" />
                         <path d="m21 21-4.35-4.35" />
                     </svg>
                 </button>
+                <form id="landing-search-form" class="hidden absolute right-0 top-full z-50 mt-3 w-72 rounded-md border border-gray-200 bg-white p-3 shadow-lg" role="search">
+                    <label for="landing-search-input" class="sr-only">Cari informasi magang</label>
+                    <div class="flex overflow-hidden rounded border border-gray-300 focus-within:border-red-600">
+                        <input id="landing-search-input" type="search" class="min-w-0 flex-1 px-3 py-2 text-sm text-gray-800 outline-none" placeholder="Cari FAQ, kontak, syarat..." autocomplete="off">
+                        <button type="submit" class="bg-red-700 px-3 text-sm font-semibold text-white hover:bg-red-800">Cari</button>
+                    </div>
+                    <p id="landing-search-status" class="mt-2 text-xs text-gray-500" aria-live="polite">Masukkan kata kunci lalu tekan Cari.</p>
+                </form>
             </div>
 
             <button id="mobile-menu-button" type="button" class="p-2 lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu">
@@ -507,6 +519,21 @@
             const timelineLine = document.getElementById('timeline-line');
             const timelineProgress = document.getElementById('timeline-progress');
             const timelineDots = document.querySelectorAll('.timeline-dot');
+            const languageButton = document.getElementById('language-menu-button');
+            const languageMenu = document.getElementById('language-menu');
+            const languageOptions = document.querySelectorAll('.language-option');
+            const searchButton = document.getElementById('search-toggle-button');
+            const searchForm = document.getElementById('landing-search-form');
+            const searchInput = document.getElementById('landing-search-input');
+            const searchStatus = document.getElementById('landing-search-status');
+            const searchableSections = [
+                { keywords: ['beranda', 'home'], target: '#beranda' },
+                { keywords: ['profil', 'profil magang', 'pengumuman', 'tentang'], target: '#profil-magang' },
+                { keywords: ['alur', 'pendaftaran', 'verifikasi', 'pelaksanaan', 'evaluasi'], target: '#alur-magang' },
+                { keywords: ['syarat', 'ketentuan', 'dokumen', 'cv', 'surat'], target: '#syarat-ketentuan' },
+                { keywords: ['faq', 'pertanyaan', 'status', 'seleksi'], target: '#faq' },
+                { keywords: ['kontak', 'bantuan', 'email', 'whatsapp', 'alamat'], target: '#kontak-bantuan' },
+            ];
 
             const setMobileOpen = function (isOpen) {
                 mobileButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
@@ -545,8 +572,111 @@
                 });
             };
 
+            const setLanguageOpen = function (isOpen) {
+                if (!languageButton || !languageMenu) return;
+                languageButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                languageMenu.classList.toggle('hidden', !isOpen);
+            };
+
+            const setSearchOpen = function (isOpen) {
+                if (!searchButton || !searchForm) return;
+                searchButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                searchForm.classList.toggle('hidden', !isOpen);
+                if (isOpen && searchInput) {
+                    setTimeout(function () {
+                        searchInput.focus();
+                    }, 0);
+                }
+            };
+
+            const scrollToTarget = function (target) {
+                const element = document.querySelector(target);
+                if (!element) return false;
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return true;
+            };
+
+            const runLandingSearch = function (query) {
+                const normalizedQuery = query.trim().toLowerCase();
+                if (!normalizedQuery) {
+                    searchStatus.textContent = 'Masukkan kata kunci terlebih dahulu.';
+                    return;
+                }
+
+                const result = searchableSections.find(function (section) {
+                    return section.keywords.some(function (keyword) {
+                        return keyword.includes(normalizedQuery) || normalizedQuery.includes(keyword);
+                    });
+                });
+
+                if (result && scrollToTarget(result.target)) {
+                    searchStatus.textContent = 'Hasil ditemukan. Mengarahkan ke bagian terkait.';
+                    setSearchOpen(false);
+                    return;
+                }
+
+                if (window.find && window.find(normalizedQuery)) {
+                    searchStatus.textContent = 'Teks ditemukan pada halaman.';
+                    return;
+                }
+
+                searchStatus.textContent = 'Tidak ada hasil untuk kata kunci tersebut.';
+            };
+
             mobileButton.addEventListener('click', function () {
                 setMobileOpen(mobileMenu.classList.contains('hidden'));
+            });
+
+            if (languageButton && languageMenu) {
+                languageButton.addEventListener('click', function () {
+                    const willOpen = languageMenu.classList.contains('hidden');
+                    setSearchOpen(false);
+                    setLanguageOpen(willOpen);
+                });
+            }
+
+            languageOptions.forEach(function (option) {
+                option.addEventListener('click', function () {
+                    const selectedLanguage = option.getAttribute('data-language');
+                    setLanguageOpen(false);
+
+                    if (selectedLanguage === 'en') {
+                        window.location.href = 'https://translate.google.com/translate?sl=id&tl=en&u=' + encodeURIComponent(window.location.href);
+                        return;
+                    }
+
+                    document.documentElement.setAttribute('lang', 'id');
+                });
+            });
+
+            if (searchButton && searchForm) {
+                searchButton.addEventListener('click', function () {
+                    const willOpen = searchForm.classList.contains('hidden');
+                    setLanguageOpen(false);
+                    setSearchOpen(willOpen);
+                });
+
+                searchForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    runLandingSearch(searchInput.value);
+                });
+            }
+
+            document.addEventListener('click', function (event) {
+                const target = event.target;
+                if (languageMenu && languageButton && !languageMenu.contains(target) && !languageButton.contains(target)) {
+                    setLanguageOpen(false);
+                }
+                if (searchForm && searchButton && !searchForm.contains(target) && !searchButton.contains(target)) {
+                    setSearchOpen(false);
+                }
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    setLanguageOpen(false);
+                    setSearchOpen(false);
+                }
             });
 
             mobileMenu.querySelectorAll('a').forEach(function (link) {
