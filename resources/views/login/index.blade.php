@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PKL | Log in</title>
+    <link rel="icon" href="{{ asset('assets/img/dprd-logo.webp') }}" type="image/webp">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -19,7 +20,10 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ route('dashboard') }}">Sistem<b>PKL</b></a>
+            <a href="{{ route('dashboard') }}" class="d-inline-flex flex-column align-items-center text-decoration-none">
+                <img src="{{ asset('assets/img/dprd-logo.webp') }}" alt="Logo DPRD Kab. Banyumas" class="mb-2" style="height: 96px; width: auto; object-fit: contain;">
+                <span>Sistem<b>PKL</b></span>
+            </a>
         </div>
         
         <div class="card">
