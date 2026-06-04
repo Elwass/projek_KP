@@ -68,7 +68,7 @@ class FileController extends Controller
         $path = $this->normalizePath($path);
 
         if (! $path) {
-            return $download ? abort(404, 'File tidak ditemukan.') : response()->file(public_path('assets/img/avatar5.png'));
+            return $download ? abort(404, 'File tidak ditemukan.') : response()->file(public_path('assets/img/default-foto-profile.jpg'));
         }
 
         if (Storage::disk('public')->exists($path)) {
@@ -79,7 +79,7 @@ class FileController extends Controller
             return $download ? Storage::download($path) : response()->file(Storage::path($path));
         }
 
-        return $download ? abort(404, 'File tidak ditemukan.') : response()->file(public_path('assets/img/avatar5.png'));
+        return $download ? abort(404, 'File tidak ditemukan.') : response()->file(public_path('assets/img/default-foto-profile.jpg'));
     }
 
     private function normalizePath($path)

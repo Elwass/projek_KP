@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sistem Informasi Magang Berdampak</title>
-    <link rel="icon" href="{{ asset('assets/img/images-removebg-preview.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('assets/img/dprd-logo.webp') }}" type="image/webp">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         html { scroll-behavior: smooth; }
