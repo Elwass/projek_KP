@@ -16,6 +16,72 @@ const menuItems = [
 const navUnderlineBase =
   "relative h-full px-3 text-sm font-bold flex items-center transition-colors duration-200 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-red-600 after:transition-all after:duration-200"
 
+const searchableSections = [
+  { keywords: ['beranda', 'home'], target: '#beranda' },
+  { keywords: ['profil', 'profil magang', 'pengumuman', 'tentang'], target: '#profil-magang' },
+  { keywords: ['alur', 'pendaftaran', 'verifikasi', 'pelaksanaan', 'evaluasi'], target: '#alur-magang' },
+  { keywords: ['syarat', 'ketentuan', 'dokumen', 'cv', 'surat'], target: '#syarat-ketentuan' },
+  { keywords: ['faq', 'pertanyaan', 'status', 'seleksi'], target: '#faq' },
+  { keywords: ['kontak', 'bantuan', 'email', 'whatsapp', 'alamat'], target: '#kontak-bantuan' },
+]
+
+const englishTranslations = {
+  'Sistem Informasi Magang Berdampak': 'Impactful Internship Information System',
+  'DPRD Kabupaten Banyumas': 'Banyumas Regency Regional House of Representatives',
+  'Bahasa Indonesia': 'Indonesian',
+  Beranda: 'Home',
+  Tentang: 'About',
+  'Profil Magang': 'Internship Profile',
+  'Alur Magang': 'Internship Flow',
+  'Syarat & Ketentuan': 'Terms & Conditions',
+  Kegiatan: 'Activities',
+  Absensi: 'Attendance',
+  Tugas: 'Tasks',
+  Penilaian: 'Assessment',
+  Evaluasi: 'Evaluation',
+  Dokumen: 'Documents',
+  Ringkasan: 'Summary',
+  'Laporan Otomatis': 'Automated Reports',
+  Informasi: 'Information',
+  Pengumuman: 'Announcements',
+  Kontak: 'Contact',
+  'Kontak & Bantuan': 'Contact & Help',
+  Pendaftaran: 'Registration',
+}
+
+const translationOriginals = new WeakMap()
+
+function applyDocumentLanguage(language) {
+  document.documentElement.setAttribute('lang', language)
+  document.title = language === 'en' ? 'Impactful Internship Information System' : 'Sistem Informasi Magang Berdampak'
+
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT
+      if (node.parentElement && ['SCRIPT', 'STYLE', 'TEXTAREA'].includes(node.parentElement.tagName)) {
+        return NodeFilter.FILTER_REJECT
+      }
+      return NodeFilter.FILTER_ACCEPT
+    },
+  })
+
+  const nodes = []
+  while (walker.nextNode()) nodes.push(walker.currentNode)
+
+  nodes.forEach((node) => {
+    if (!translationOriginals.has(node)) translationOriginals.set(node, node.nodeValue)
+
+    const original = translationOriginals.get(node)
+    const trimmedOriginal = original.trim()
+    const leading = original.match(/^\s*/)[0]
+    const trailing = original.match(/\s*$/)[0]
+
+    node.nodeValue = language === 'en' && englishTranslations[trimmedOriginal]
+      ? `${leading}${englishTranslations[trimmedOriginal]}${trailing}`
+      : original
+  })
+}
+
 function DropdownItem({ item }) {
   return (
     <div className="relative group h-full flex items-center">
@@ -48,6 +114,10 @@ export default function Navbar() {
   const [openMobile, setOpenMobile] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [isScrolledState, setIsScrolledState] = useState(false)
+  const [languageOpen, setLanguageOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchStatus, setSearchStatus] = useState('Masukkan kata kunci lalu tekan Cari.')
 
   useEffect(() => {
     const onScroll = () => {
@@ -71,6 +141,45 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const handleLanguageChange = (language) => {
+    applyDocumentLanguage(language)
+    setLanguageOpen(false)
+  }
+
+  const scrollToTarget = (target) => {
+    const element = document.querySelector(target)
+    if (!element) return false
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    return true
+  }
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault()
+    const normalizedQuery = searchQuery.trim().toLowerCase()
+
+    if (!normalizedQuery) {
+      setSearchStatus('Masukkan kata kunci terlebih dahulu.')
+      return
+    }
+
+    const result = searchableSections.find((section) =>
+      section.keywords.some((keyword) => keyword.includes(normalizedQuery) || normalizedQuery.includes(keyword)),
+    )
+
+    if (result && scrollToTarget(result.target)) {
+      setSearchStatus('Hasil ditemukan. Mengarahkan ke bagian terkait.')
+      setSearchOpen(false)
+      return
+    }
+
+    if (window.find && window.find(normalizedQuery)) {
+      setSearchStatus('Teks ditemukan pada halaman.')
+      return
+    }
+
+    setSearchStatus('Tidak ada hasil untuk kata kunci tersebut.')
+  }
+
   return (
     <header
       className={`fixed top-0 left-0 z-50 w-full border-b border-red-600 bg-white transition-transform duration-300 ease-in-out ${
@@ -80,7 +189,7 @@ export default function Navbar() {
       <div className="flex min-h-[84px] w-full items-center justify-between px-10 py-3 xl:px-16 md:min-h-[92px] md:py-4">
         <div className="flex items-center gap-3 md:gap-4">
           <img
-            src="/images/dprd-logo.webp"
+            src="/assets/img/dprd-logo.webp"
             alt="Logo DPRD Kab. Banyumas"
             className="h-12 w-auto object-contain md:h-14"
           />
@@ -112,13 +221,61 @@ export default function Navbar() {
           )}
         </nav>
 
-        <div className="hidden items-center gap-2 text-slate-700 lg:flex">
-          <button className="p-2 transition-colors hover:text-red-700">
+        <div className="relative hidden items-center gap-2 text-slate-700 lg:flex">
+          <button
+            type="button"
+            className="p-2 transition-colors hover:text-red-700"
+            aria-label="Pilih bahasa"
+            aria-expanded={languageOpen}
+            aria-controls="language-menu"
+            onClick={() => {
+              setSearchOpen(false)
+              setLanguageOpen((value) => !value)
+            }}
+          >
             <Globe size={18} />
           </button>
-          <button className="p-2 transition-colors hover:text-red-700">
+          {languageOpen && (
+            <div id="language-menu" className="absolute right-0 top-full z-50 mt-3 w-44 rounded-md border border-gray-200 bg-white p-2 text-sm shadow-lg">
+              <button type="button" className="block w-full rounded px-3 py-2 text-left font-semibold text-red-700 hover:bg-red-50" onClick={() => handleLanguageChange('id')}>
+                Bahasa Indonesia
+              </button>
+              <button type="button" className="block w-full rounded px-3 py-2 text-left text-gray-700 hover:bg-red-50 hover:text-red-700" onClick={() => handleLanguageChange('en')}>
+                English
+              </button>
+            </div>
+          )}
+          <button
+            type="button"
+            className="p-2 transition-colors hover:text-red-700"
+            aria-label="Buka pencarian"
+            aria-expanded={searchOpen}
+            aria-controls="landing-search-form"
+            onClick={() => {
+              setLanguageOpen(false)
+              setSearchOpen((value) => !value)
+            }}
+          >
             <Search size={18} />
           </button>
+          {searchOpen && (
+            <form id="landing-search-form" className="absolute right-0 top-full z-50 mt-3 w-72 rounded-md border border-gray-200 bg-white p-3 shadow-lg" role="search" onSubmit={handleSearchSubmit}>
+              <label htmlFor="landing-search-input" className="sr-only">Cari informasi magang</label>
+              <div className="flex overflow-hidden rounded border border-gray-300 focus-within:border-red-600">
+                <input
+                  id="landing-search-input"
+                  type="search"
+                  className="min-w-0 flex-1 px-3 py-2 text-sm text-gray-800 outline-none"
+                  placeholder="Cari FAQ, kontak, syarat..."
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  autoFocus
+                />
+                <button type="submit" className="bg-red-700 px-3 text-sm font-semibold text-white hover:bg-red-800">Cari</button>
+              </div>
+              <p className="mt-2 text-xs text-gray-500" aria-live="polite">{searchStatus}</p>
+            </form>
+          )}
         </div>
 
         <button className="p-2 lg:hidden" onClick={() => setOpenMobile((v) => !v)}>

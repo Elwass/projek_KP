@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sistem Informasi Magang Berdampak</title>
-    <link rel="icon" href="{{ asset('assets/img/images-removebg-preview.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('assets/img/dprd-logo.webp') }}" type="image/webp">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         html { scroll-behavior: smooth; }
@@ -179,21 +179,33 @@
                 @endforeach
             </nav>
 
-            <div class="hidden items-center gap-2 text-slate-700 lg:flex" aria-hidden="true">
-                <button type="button" class="p-2 transition-colors hover:text-red-700" aria-label="Bahasa">
-                    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="relative hidden items-center gap-2 text-slate-700 lg:flex">
+                <button id="language-menu-button" type="button" class="p-2 transition-colors hover:text-red-700" aria-label="Pilih bahasa" aria-haspopup="true" aria-expanded="false" aria-controls="language-menu">
+                    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="12" cy="12" r="10" />
                         <path d="M2 12h20" />
                         <path d="M12 2a15.3 15.3 0 0 1 0 20" />
                         <path d="M12 2a15.3 15.3 0 0 0 0 20" />
                     </svg>
                 </button>
-                <button type="button" class="p-2 transition-colors hover:text-red-700" aria-label="Cari">
-                    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <div id="language-menu" class="hidden absolute right-0 top-full z-50 mt-3 w-44 rounded-md border border-gray-200 bg-white p-2 text-sm shadow-lg">
+                    <button type="button" class="language-option block w-full rounded px-3 py-2 text-left font-semibold text-red-700 hover:bg-red-50" data-language="id">Bahasa Indonesia</button>
+                    <button type="button" class="language-option block w-full rounded px-3 py-2 text-left text-gray-700 hover:bg-red-50 hover:text-red-700" data-language="en">English</button>
+                </div>
+                <button id="search-toggle-button" type="button" class="p-2 transition-colors hover:text-red-700" aria-label="Buka pencarian" aria-expanded="false" aria-controls="landing-search-form">
+                    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="11" cy="11" r="8" />
                         <path d="m21 21-4.35-4.35" />
                     </svg>
                 </button>
+                <form id="landing-search-form" class="hidden absolute right-0 top-full z-50 mt-3 w-72 rounded-md border border-gray-200 bg-white p-3 shadow-lg" role="search">
+                    <label for="landing-search-input" class="sr-only">Cari informasi magang</label>
+                    <div class="flex overflow-hidden rounded border border-gray-300 focus-within:border-red-600">
+                        <input id="landing-search-input" type="search" class="min-w-0 flex-1 px-3 py-2 text-sm text-gray-800 outline-none" placeholder="Cari FAQ, kontak, syarat..." autocomplete="off">
+                        <button type="submit" class="bg-red-700 px-3 text-sm font-semibold text-white hover:bg-red-800">Cari</button>
+                    </div>
+                    <p id="landing-search-status" class="mt-2 text-xs text-gray-500" aria-live="polite">Masukkan kata kunci lalu tekan Cari.</p>
+                </form>
             </div>
 
             <button id="mobile-menu-button" type="button" class="p-2 lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu">
@@ -507,6 +519,124 @@
             const timelineLine = document.getElementById('timeline-line');
             const timelineProgress = document.getElementById('timeline-progress');
             const timelineDots = document.querySelectorAll('.timeline-dot');
+            const languageButton = document.getElementById('language-menu-button');
+            const languageMenu = document.getElementById('language-menu');
+            const languageOptions = document.querySelectorAll('.language-option');
+            const searchButton = document.getElementById('search-toggle-button');
+            const searchForm = document.getElementById('landing-search-form');
+            const searchInput = document.getElementById('landing-search-input');
+            const searchStatus = document.getElementById('landing-search-status');
+            const searchableSections = [
+                { keywords: ['beranda', 'home'], target: '#beranda' },
+                { keywords: ['profil', 'profil magang', 'pengumuman', 'tentang'], target: '#profil-magang' },
+                { keywords: ['alur', 'pendaftaran', 'verifikasi', 'pelaksanaan', 'evaluasi'], target: '#alur-magang' },
+                { keywords: ['syarat', 'ketentuan', 'dokumen', 'cv', 'surat'], target: '#syarat-ketentuan' },
+                { keywords: ['faq', 'pertanyaan', 'status', 'seleksi'], target: '#faq' },
+                { keywords: ['kontak', 'bantuan', 'email', 'whatsapp', 'alamat'], target: '#kontak-bantuan' },
+            ];
+            const englishTranslations = {
+                'Sistem Informasi Magang Berdampak': 'Impactful Internship Information System',
+                'Bahasa Indonesia': 'Indonesian',
+                'Cari informasi magang': 'Search internship information',
+                'Cari': 'Search',
+                'Masukkan kata kunci lalu tekan Cari.': 'Enter a keyword, then press Search.',
+                'DPRD Kabupaten Banyumas': 'Banyumas Regency Regional House of Representatives',
+                'Beranda': 'Home',
+                'Tentang': 'About',
+                'Profil Magang': 'Internship Profile',
+                'Alur Magang': 'Internship Flow',
+                'Syarat & Ketentuan': 'Terms & Conditions',
+                'Kegiatan': 'Activities',
+                'Absensi': 'Attendance',
+                'Logbook': 'Logbook',
+                'Tugas': 'Tasks',
+                'Dashboard': 'Dashboard',
+                'Penilaian': 'Assessment',
+                'Evaluasi': 'Evaluation',
+                'Feedback': 'Feedback',
+                'Dokumen': 'Documents',
+                'Template': 'Templates',
+                'Upload': 'Upload',
+                'AI Assistant': 'AI Assistant',
+                'Ringkasan': 'Summary',
+                'Laporan Otomatis': 'Automated Reports',
+                'Informasi': 'Information',
+                'Pengumuman': 'Announcements',
+                'FAQ': 'FAQ',
+                'Kontak': 'Contact',
+                'Masuk Sistem': 'Sign In',
+                'Daftar Magang': 'Register for Internship',
+                'Profil Program Magang': 'Internship Program Profile',
+                'Program magang DPRD Banyumas memberikan kesempatan bagi mahasiswa untuk terlibat langsung dalam lingkungan kerja pemerintahan serta mengembangkan kemampuan teknis (hard skills) dan keterampilan profesional (soft skills) secara terstruktur melalui pendampingan mentor, pencatatan logbook harian, serta evaluasi berkala agar proses pembelajaran berjalan optimal dan sesuai kebutuhan instansi.': 'The Banyumas DPRD internship program gives students the opportunity to engage directly in a government work environment while developing technical skills and professional soft skills through structured mentor guidance, daily logbook recording, and periodic evaluation so the learning process runs optimally and aligns with institutional needs.',
+                'Skema Magang': 'Internship Scheme',
+                'Kegiatan berbasis logbook harian': 'Daily logbook-based activities',
+                'Pendampingan oleh mentor instansi': 'Guidance from institutional mentors',
+                'Evaluasi berkala selama program': 'Periodic evaluation during the program',
+                'Terintegrasi dengan aktivitas kerja instansi': 'Integrated with institutional work activities',
+                'Durasi & Pelaksanaan': 'Duration & Implementation',
+                'Durasi menyesuaikan kebijakan kampus dan instansi asal mahasiswa': 'Duration follows campus and host institution policies',
+                'Waktu/jam kegiatan mengikuti operasional instansi': 'Activity hours follow institutional operations',
+                'Berbasis aktivitas kerja nyata di lingkungan instansi': 'Based on real work activities in the institution',
+                'Bidang Kegiatan': 'Activity Fields',
+                'Administrasi pemerintahan': 'Government administration',
+                'Sistem informasi dan teknologi': 'Information systems and technology',
+                'Pengelolaan data dan dokumentasi': 'Data and documentation management',
+                'Hukum dan kebijakan publik': 'Law and public policy',
+                'Keuangan dan pengelolaan anggaran': 'Finance and budget management',
+                'Pelayanan publik': 'Public services',
+                'Output Program': 'Program Outputs',
+                'Laporan kegiatan magang': 'Internship activity report',
+                'Penilaian kinerja dari mentor': 'Performance assessment from mentors',
+                'Rekap logbook harian': 'Daily logbook recap',
+                'Pengalaman kerja profesional': 'Professional work experience',
+                'Proses pelaksanaan magang di DPRD Banyumas secara sistematis dan terstruktur': 'A systematic and structured internship process at Banyumas DPRD',
+                'Pendaftaran': 'Registration',
+                'Mengisi form pendaftaran online': 'Complete the online registration form',
+                'Upload berkas (CV, surat pengantar, dll)': 'Upload files (CV, cover letter, etc.)',
+                'Verifikasi': 'Verification',
+                'Seleksi administrasi oleh instansi': 'Administrative selection by the institution',
+                'Penyesuaian bidang magang': 'Internship field matching',
+                'Pelaksanaan': 'Implementation',
+                'Kegiatan magang di instansi': 'Internship activities at the institution',
+                'Pengisian logbook harian': 'Daily logbook completion',
+                'Pendampingan mentor': 'Mentor guidance',
+                'Penyusunan laporan akhir': 'Final report preparation',
+                'Sertifikat magang': 'Internship certificate',
+                'Syarat & Ketentuan': 'Terms & Conditions',
+                'Persyaratan Peserta': 'Participant Requirements',
+                'Mahasiswa aktif dari perguruan tinggi': 'Active university student',
+                'Memiliki surat pengantar dari kampus': 'Has an introduction letter from campus',
+                'Bersedia mengikuti seluruh rangkaian kegiatan magang': 'Willing to follow all internship activities',
+                'Memiliki minat di bidang pemerintahan dan pelayanan publik': 'Interested in government and public service',
+                'Ketentuan Umum': 'General Terms',
+                'Durasi magang menyesuaikan kebijakan kampus dan instansi': 'Internship duration follows campus and institution policies',
+                'Jam kegiatan mengikuti operasional instansi': 'Activity hours follow institutional operations',
+                'Peserta wajib menjaga etika dan kedisiplinan': 'Participants must maintain ethics and discipline',
+                'Wajib mengikuti arahan mentor dan pembimbing': 'Must follow mentor and supervisor directions',
+                'Berkas yang Diperlukan': 'Required Documents',
+                'Surat pengantar dari kampus': 'Introduction letter from campus',
+                'Transkrip nilai (opsional)': 'Transcript (optional)',
+                'Dokumen pendukung lainnya (jika diperlukan)': 'Other supporting documents (if required)',
+                'FAQ Magang Berdampak': 'Impactful Internship FAQ',
+                'Siapa saja yang dapat mendaftar program magang ini?': 'Who can register for this internship program?',
+                'Program ini terbuka bagi mahasiswa aktif yang memenuhi persyaratan administrasi dari kampus dan ketentuan instansi DPRD Banyumas.': 'This program is open to active students who meet campus administrative requirements and Banyumas DPRD institutional requirements.',
+                'Bagaimana alur pendaftaran magang dilakukan?': 'How does the internship registration flow work?',
+                'Pendaftaran dilakukan secara online melalui sistem, dimulai dari registrasi akun, melengkapi data diri, mengunggah berkas, hingga menunggu proses verifikasi.': 'Registration is completed online through the system, starting from account registration, completing personal data, uploading documents, and waiting for verification.',
+                'Dokumen apa saja yang perlu disiapkan?': 'What documents need to be prepared?',
+                'Dokumen umum yang biasanya dibutuhkan meliputi surat pengantar kampus, CV, transkrip nilai, dan dokumen pendukung lain sesuai ketentuan periode magang.': 'Common documents usually include a campus introduction letter, CV, transcript, and other supporting documents according to the internship period requirements.',
+                'Bagaimana cara memantau status seleksi?': 'How can I monitor selection status?',
+                'Status pendaftaran dapat dipantau langsung melalui dashboard akun pada Sistem Informasi Magang setelah proses pengajuan selesai.': 'Registration status can be monitored directly through the account dashboard after the submission process is complete.',
+                'Kontak & Bantuan': 'Contact & Help',
+                'Jika membutuhkan bantuan terkait pendaftaran atau pelaksanaan magang, silakan hubungi Sekretariat DPRD Kabupaten Banyumas.': 'If you need assistance with registration or internship implementation, please contact the Secretariat of the Banyumas Regency DPRD.',
+                'Email:': 'Email:',
+                'WhatsApp:': 'WhatsApp:',
+                'Alamat': 'Address',
+                'Jl. Kabupaten No.1, Purwokerto, Sokanegara, Kec. Purwokerto Tim., Kabupaten Banyumas, Jawa Tengah 53115': 'Jl. Kabupaten No.1, Purwokerto, Sokanegara, East Purwokerto District, Banyumas Regency, Central Java 53115',
+                'Tautan Cepat': 'Quick Links',
+                'Kebijakan Privasi': 'Privacy Policy',
+                'All rights reserved.': 'All rights reserved.',
+            };
+            const translationOriginals = new WeakMap();
 
             const setMobileOpen = function (isOpen) {
                 mobileButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
@@ -545,8 +675,157 @@
                 });
             };
 
+            const setLanguageOpen = function (isOpen) {
+                if (!languageButton || !languageMenu) return;
+                languageButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                languageMenu.classList.toggle('hidden', !isOpen);
+            };
+
+            const translateTextNodes = function (language) {
+                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+                    acceptNode: function (node) {
+                        if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                        if (node.parentElement && ['SCRIPT', 'STYLE', 'TEXTAREA'].includes(node.parentElement.tagName)) {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        return NodeFilter.FILTER_ACCEPT;
+                    },
+                });
+                const nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+
+                nodes.forEach(function (node) {
+                    if (!translationOriginals.has(node)) {
+                        translationOriginals.set(node, node.nodeValue);
+                    }
+
+                    const original = translationOriginals.get(node);
+                    const trimmedOriginal = original.trim();
+                    const leading = original.match(/^\s*/)[0];
+                    const trailing = original.match(/\s*$/)[0];
+
+                    node.nodeValue = language === 'en' && englishTranslations[trimmedOriginal]
+                        ? leading + englishTranslations[trimmedOriginal] + trailing
+                        : original;
+                });
+            };
+
+            const applyLandingLanguage = function (language) {
+                document.documentElement.setAttribute('lang', language);
+                document.title = language === 'en' ? 'Impactful Internship Information System' : 'Sistem Informasi Magang Berdampak';
+                translateTextNodes(language);
+
+                if (searchInput) {
+                    searchInput.placeholder = language === 'en' ? 'Search FAQ, contact, requirements...' : 'Cari FAQ, kontak, syarat...';
+                }
+
+                if (searchStatus) {
+                    searchStatus.textContent = language === 'en'
+                        ? 'Enter a keyword, then press Search.'
+                        : 'Masukkan kata kunci lalu tekan Cari.';
+                }
+
+                languageOptions.forEach(function (option) {
+                    const isActive = option.getAttribute('data-language') === language;
+                    option.classList.toggle('font-semibold', isActive);
+                    option.classList.toggle('text-red-700', isActive);
+                    option.classList.toggle('text-gray-700', !isActive);
+                });
+            };
+
+            const setSearchOpen = function (isOpen) {
+                if (!searchButton || !searchForm) return;
+                searchButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                searchForm.classList.toggle('hidden', !isOpen);
+                if (isOpen && searchInput) {
+                    setTimeout(function () {
+                        searchInput.focus();
+                    }, 0);
+                }
+            };
+
+            const scrollToTarget = function (target) {
+                const element = document.querySelector(target);
+                if (!element) return false;
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return true;
+            };
+
+            const runLandingSearch = function (query) {
+                const normalizedQuery = query.trim().toLowerCase();
+                if (!normalizedQuery) {
+                    searchStatus.textContent = 'Masukkan kata kunci terlebih dahulu.';
+                    return;
+                }
+
+                const result = searchableSections.find(function (section) {
+                    return section.keywords.some(function (keyword) {
+                        return keyword.includes(normalizedQuery) || normalizedQuery.includes(keyword);
+                    });
+                });
+
+                if (result && scrollToTarget(result.target)) {
+                    searchStatus.textContent = 'Hasil ditemukan. Mengarahkan ke bagian terkait.';
+                    setSearchOpen(false);
+                    return;
+                }
+
+                if (window.find && window.find(normalizedQuery)) {
+                    searchStatus.textContent = 'Teks ditemukan pada halaman.';
+                    return;
+                }
+
+                searchStatus.textContent = 'Tidak ada hasil untuk kata kunci tersebut.';
+            };
+
             mobileButton.addEventListener('click', function () {
                 setMobileOpen(mobileMenu.classList.contains('hidden'));
+            });
+
+            if (languageButton && languageMenu) {
+                languageButton.addEventListener('click', function () {
+                    const willOpen = languageMenu.classList.contains('hidden');
+                    setSearchOpen(false);
+                    setLanguageOpen(willOpen);
+                });
+            }
+
+            languageOptions.forEach(function (option) {
+                option.addEventListener('click', function () {
+                    const selectedLanguage = option.getAttribute('data-language');
+                    setLanguageOpen(false);
+                    applyLandingLanguage(selectedLanguage);
+                });
+            });
+
+            if (searchButton && searchForm) {
+                searchButton.addEventListener('click', function () {
+                    const willOpen = searchForm.classList.contains('hidden');
+                    setLanguageOpen(false);
+                    setSearchOpen(willOpen);
+                });
+
+                searchForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    runLandingSearch(searchInput.value);
+                });
+            }
+
+            document.addEventListener('click', function (event) {
+                const target = event.target;
+                if (languageMenu && languageButton && !languageMenu.contains(target) && !languageButton.contains(target)) {
+                    setLanguageOpen(false);
+                }
+                if (searchForm && searchButton && !searchForm.contains(target) && !searchButton.contains(target)) {
+                    setSearchOpen(false);
+                }
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    setLanguageOpen(false);
+                    setSearchOpen(false);
+                }
             });
 
             mobileMenu.querySelectorAll('a').forEach(function (link) {
