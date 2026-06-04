@@ -75,7 +75,7 @@ class DataPesertaController extends Controller
                 'instansi' => 'required|max:255',
                 'cv' => 'mimes:pdf,doc,docx|max:10000',
                 'pengajuan' => 'mimes:pdf,doc,docx|max:10000',
-                'foto' => 'image|mimes:jpg,png,jpeg|max:1024',
+                'foto' => 'image|mimes:jpg,jpeg,png,webp|max:15360',
             ]);
 
             $fotoLama = $peserta->foto;

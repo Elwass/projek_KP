@@ -43,7 +43,7 @@ class PegawaiController extends Controller
                 'no_ktp' => 'required|max:255',
                 'no_telp' => 'required|max:255',
                 'role' => 'required|max:255',
-                'foto' => 'required|image|mimes:jpg,png,jpeg|max:1024',
+                'foto' => 'required|image|mimes:jpg,jpeg,png,webp|max:15360',
             ]);
 
             $validatedData['password'] = Hash::make($validatedData['password']);
@@ -82,7 +82,7 @@ class PegawaiController extends Controller
                 'no_ktp' => 'required|max:255',
                 'no_telp' => 'required|max:255',
                 'role' => 'required|max:255',
-                'foto' => 'image|mimes:jpg,png,jpeg|max:1024',
+                'foto' => 'image|mimes:jpg,jpeg,png,webp|max:15360',
             ]);
 
             $fotoLama = $pegawai->foto;
