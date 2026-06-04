@@ -114,7 +114,7 @@ class PesertaController extends Controller
             'tgl_selesai' => 'required',
             'cv' => 'required|mimes:pdf,doc,docx|max:10000',
             'pengajuan' => 'required|mimes:pdf,doc,docx|max:10000',
-            'foto' => 'required|image|mimes:jpg,png,jpeg|max:1024',
+            'foto' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
         
         $validatedData['cv'] = $request->file('cv')->store('cv', 'public');
@@ -167,7 +167,7 @@ class PesertaController extends Controller
             'tgl_selesai' => 'required',
             'cv' => 'mimes:pdf,doc,docx|max:10000',
             'pengajuan' => 'mimes:pdf,doc,docx|max:10000',
-            'foto' => 'image|mimes:jpg,png,jpeg|max:1024',
+            'foto' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
         $fotoLama = auth()->user()->foto;

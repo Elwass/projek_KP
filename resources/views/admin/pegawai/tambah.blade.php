@@ -187,13 +187,14 @@
                         <div class="form-group">
                             <label for="foto">Pas Photo</label>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input @error('foto') is-invalid @enderror" id="foto" name="foto">
+                                <input type="file" class="custom-file-input @error('foto') is-invalid @enderror" id="foto" name="foto" accept="image/jpeg,image/png,image/webp">
                                 <label class="custom-file-label" for="customFile">Choose file</label>
                                 @error('foto')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
+                                <small class="form-text text-muted">Format JPG, JPEG, PNG, atau WEBP. Ukuran maksimal 5 MB.</small>
                             </div>
                           </div>
                     </div>
